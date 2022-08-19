@@ -1,24 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/popup_background">
 
-    <TextView
-        android:id="@+id/choosetxt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:text="Sort By"
-        android:textColor="@color/black"
-        android:layout_marginTop="5dp"
-        android:textSize="20dp"
-        android:textStyle="bold"/>
 
     <LinearLayout
-        android:id="@+id/layout1"
+        android:id="@+id/layoutEdit"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,27 +17,19 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_title_24"/>
+            android:src="@drawable/ic_baseline_check_box_24"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Title"
-            android:layout_marginLeft="25dp"
+            android:text="Tick box"
+            android:layout_marginLeft="15dp"
             android:textSize="16sp"/>
-
-        <ImageView
-            android:id="@+id/image1"
-            android:layout_width="20sp"
-            android:layout_height="20sp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="210dp"
-            app:tint="@color/black"/>
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layout2"
+        android:id="@+id/layoutShare"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -58,26 +39,18 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_arrow_downward_24"/>
+            android:src="@drawable/ic_baseline_notifications_active_24"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Newest to Oldest"
-            android:layout_marginLeft="25dp"
+            android:text="Reminder"
+            android:layout_marginLeft="15dp"
             android:textSize="16sp"/>
-        <ImageView
-            android:id="@+id/image2"
-            android:layout_width="20sp"
-            android:layout_height="20sp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="120dp"
-            app:tint="@color/black"/>
-
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layout3"
+        android:id="@+id/layoutUpload"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -87,25 +60,19 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_arrow_upward_24"/>
+            android:src="@drawable/ic_baseline_location_on_24"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Oldest to Newest"
-            android:layout_marginLeft="25dp"
+            android:text="Location"
+            android:layout_marginLeft="15dp"
             android:textSize="16sp"/>
-        <ImageView
-            android:id="@+id/image3"
-            android:layout_width="20sp"
-            android:layout_height="20sp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="120dp"
-            app:tint="@color/black"/>
+
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layout4"
+        android:id="@+id/layoutPrint"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -121,14 +88,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Default"
-            android:layout_marginLeft="25dp"
+            android:layout_marginLeft="15dp"
             android:textSize="16sp"/>
-        <ImageView
-            android:id="@+id/image4"
-            android:layout_width="20sp"
-            android:layout_height="20sp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="190dp"
-            app:tint="@color/black"/>
+
     </LinearLayout>
 </LinearLayout>

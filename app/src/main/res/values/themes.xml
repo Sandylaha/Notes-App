@@ -24,4 +24,5 @@
         <item name="colorControlActivated">@color/black</item>
         <item name="queryHint">"Search Note"</item>
     </style>
+
 </resources>
