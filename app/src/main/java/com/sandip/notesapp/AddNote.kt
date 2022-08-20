@@ -1,29 +1,39 @@
 package com.sandip.notesapp
 
 import android.app.Dialog
+import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
-import android.view.Gravity
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
+import android.provider.MediaStore
+import android.util.Log
+import android.view.*
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.common.api.Status
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.android.material.snackbar.Snackbar
 import com.sandip.notesapp.databinding.ActivityAddNoteBinding
-import com.sandip.notesapp.databinding.ColorPopupBinding
 
 
-class AddNote : AppCompatActivity() {
+open class AddNote : AppCompatActivity() {
+
 
     private lateinit var binding: ActivityAddNoteBinding
-
+    private val REQUEST_IMAGE_CAPTURE = 1
+    private val SELECT_PICTURE = 2
+    private val AUTOCOMPLETE_REQUEST_CODE = 3
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddNoteBinding.inflate(layoutInflater)
@@ -33,8 +43,7 @@ class AddNote : AppCompatActivity() {
             finish()
         }
 
-        binding.delete.setOnClickListener {
-        }
+
         binding.share.setOnClickListener {
 
             try {
@@ -74,80 +83,182 @@ class AddNote : AppCompatActivity() {
             finish()
         }
 
-        val dialog = Dialog(this)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.color_popup)
+        val colorDialog = Dialog(this)
+        colorDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        colorDialog.setContentView(R.layout.color_popup)
+
+        val addDialog = Dialog(this)
+        addDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        addDialog.setContentView(R.layout.add_popup)
+
+        val imageDialog = Dialog(this)
+        imageDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        imageDialog.setContentView(R.layout.image_popup)
+
         binding.add.setOnClickListener {
-            val dialog = Dialog(this)
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            dialog.setContentView(R.layout.add_popup)
-            dialog.show()
-            dialog.window?.setLayout(
+            addDialog.show()
+            addDialog.window?.setLayout(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
             )
-            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
-            dialog.window?.setGravity(Gravity.BOTTOM)
+            addDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            addDialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+            addDialog.window?.setGravity(Gravity.BOTTOM)
         }
 
         binding.color.setOnClickListener {
-            dialog.show()
-            dialog.window?.setLayout(
+            colorDialog.show()
+            colorDialog.window?.setLayout(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
             )
-            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
-            dialog.window?.setGravity(Gravity.BOTTOM)
+            colorDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            colorDialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+            colorDialog.window?.setGravity(Gravity.BOTTOM)
+        }
 
+        binding.image.setOnClickListener {
+
+            imageDialog.show()
+            imageDialog.window?.setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+            )
+            imageDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            imageDialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+            imageDialog.window?.setGravity(Gravity.BOTTOM)
 
         }
-        val frame_white: FrameLayout = dialog.findViewById(R.id.frame_white)
-        val white:ImageView  = dialog.findViewById(R.id.white)
+        val camera:LinearLayout  = imageDialog.findViewById(R.id.take_photo)
+        val photo:LinearLayout  = imageDialog.findViewById(R.id.add_photo)
+
+
+
+        camera.setOnClickListener {
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
+            imageDialog.dismiss()
+
+        }
+
+        photo.setOnClickListener {
+            val i = Intent()
+            i.type = "image/*"
+            i.action = Intent.ACTION_GET_CONTENT
+            startActivityForResult(Intent.createChooser(i, "Select Picture"), SELECT_PICTURE)
+            imageDialog.dismiss()
+        }
+
+
+
+
+
+
+        val frame_white: FrameLayout = colorDialog.findViewById(R.id.frame_white)
+        val white:ImageView  = colorDialog.findViewById(R.id.white)
         white.setImageResource(R.drawable.ic_baseline_done_24)
 
-        val frame_lightsteelblue: FrameLayout = dialog.findViewById(R.id.frame_lightsteelblue)
-        val lightsteelblue:ImageView  = dialog.findViewById(R.id.lightsteelblue)
+        val frame_lightsteelblue: FrameLayout = colorDialog.findViewById(R.id.frame_lightsteelblue)
+        val lightsteelblue:ImageView  = colorDialog.findViewById(R.id.lightsteelblue)
 
-        val frame_aquamarine: FrameLayout = dialog.findViewById(R.id.frame_aquamarine)
-        val aquamarine:ImageView  = dialog.findViewById(R.id.aquamarine)
+        val frame_aquamarine: FrameLayout = colorDialog.findViewById(R.id.frame_aquamarine)
+        val aquamarine:ImageView  = colorDialog.findViewById(R.id.aquamarine)
 
-        val frame_grey: FrameLayout = dialog.findViewById(R.id.frame_grey)
-        val grey:ImageView  = dialog.findViewById(R.id.grey)
+        val frame_grey: FrameLayout = colorDialog.findViewById(R.id.frame_grey)
+        val grey:ImageView  = colorDialog.findViewById(R.id.grey)
 
-        val frame_darkgrey: FrameLayout = dialog.findViewById(R.id.frame_darkgrey)
-        val darkgrey:ImageView  = dialog.findViewById(R.id.darkgrey)
+        val frame_darkgrey: FrameLayout = colorDialog.findViewById(R.id.frame_darkgrey)
+        val darkgrey:ImageView  = colorDialog.findViewById(R.id.darkgrey)
 
-        val frame_lightcyan: FrameLayout = dialog.findViewById(R.id.frame_lightcyan)
-        val lightcyan:ImageView  = dialog.findViewById(R.id.lightcyan)
+        val frame_lightcyan: FrameLayout = colorDialog.findViewById(R.id.frame_lightcyan)
+        val lightcyan:ImageView  = colorDialog.findViewById(R.id.lightcyan)
 
-        val frame_lightgoldenyellow: FrameLayout = dialog.findViewById(R.id.frame_lightgoldenyellow)
-        val lightgoldenyellow:ImageView  = dialog.findViewById(R.id.lightgoldenyellow)
+        val frame_lightgoldenyellow: FrameLayout = colorDialog.findViewById(R.id.frame_lightgoldenyellow)
+        val lightgoldenyellow:ImageView  = colorDialog.findViewById(R.id.lightgoldenyellow)
 
-        val frame_lightgreen: FrameLayout = dialog.findViewById(R.id.frame_lightgreen)
-        val lightgreen:ImageView  = dialog.findViewById(R.id.lightgreen)
+        val frame_lightgreen: FrameLayout = colorDialog.findViewById(R.id.frame_lightgreen)
+        val lightgreen:ImageView  = colorDialog.findViewById(R.id.lightgreen)
 
-        val frame_palegoldenrod: FrameLayout = dialog.findViewById(R.id.frame_palegoldenrod)
-        val palegoldenrod:ImageView  = dialog.findViewById(R.id.palegoldenrod)
+        val frame_palegoldenrod: FrameLayout = colorDialog.findViewById(R.id.frame_palegoldenrod)
+        val palegoldenrod:ImageView  = colorDialog.findViewById(R.id.palegoldenrod)
 
-        val frame_palevioletred: FrameLayout = dialog.findViewById(R.id.frame_palevioletred)
-        val palevioletred:ImageView  = dialog.findViewById(R.id.palevioletred)
+        val frame_palevioletred: FrameLayout = colorDialog.findViewById(R.id.frame_palevioletred)
+        val palevioletred:ImageView  = colorDialog.findViewById(R.id.palevioletred)
 
-        val frame_powderblue: FrameLayout = dialog.findViewById(R.id.frame_powderblue)
-        val powderblue:ImageView  = dialog.findViewById(R.id.powderblue)
+        val frame_powderblue: FrameLayout = colorDialog.findViewById(R.id.frame_powderblue)
+        val powderblue:ImageView  = colorDialog.findViewById(R.id.powderblue)
 
-        val frame_rosybrown: FrameLayout = dialog.findViewById(R.id.frame_rosybrown)
-        val rosybrown:ImageView  = dialog.findViewById(R.id.rosybrown)
+        val frame_rosybrown: FrameLayout = colorDialog.findViewById(R.id.frame_rosybrown)
+        val rosybrown:ImageView  = colorDialog.findViewById(R.id.rosybrown)
 
-        val frame_sandybrown: FrameLayout = dialog.findViewById(R.id.frame_sandybrown)
-        val sandybrown:ImageView  = dialog.findViewById(R.id.sandybrown)
+        val frame_sandybrown: FrameLayout = colorDialog.findViewById(R.id.frame_sandybrown)
+        val sandybrown:ImageView  = colorDialog.findViewById(R.id.sandybrown)
 
-        val frame_thistle: FrameLayout = dialog.findViewById(R.id.frame_thistle)
-        val thistle:ImageView  = dialog.findViewById(R.id.thistle)
+        val frame_thistle: FrameLayout = colorDialog.findViewById(R.id.frame_thistle)
+        val thistle:ImageView  = colorDialog.findViewById(R.id.thistle)
 
-        val frame_violet: FrameLayout = dialog.findViewById(R.id.frame_violet)
-        val violet:ImageView  = dialog.findViewById(R.id.violet)
+        val frame_violet: FrameLayout = colorDialog.findViewById(R.id.frame_violet)
+        val violet:ImageView  = colorDialog.findViewById(R.id.violet)
+
+
+        val tickBox: LinearLayout = addDialog.findViewById(R.id.tick_box)
+        tickBox.setOnClickListener {
+            addDialog.dismiss()
+            binding.checkbox.visibility = View.VISIBLE
+            binding.addMore.visibility = View.VISIBLE
+        }
+
+        binding.addMore.setOnClickListener {
+
+            var linf: LayoutInflater
+            val rr: LinearLayout
+
+            linf = applicationContext.getSystemService(
+                Context.LAYOUT_INFLATER_SERVICE
+            ) as LayoutInflater
+            linf = LayoutInflater.from(this)
+
+            rr = findViewById<View>(R.id.more) as LinearLayout
+
+
+            val v: View = linf.inflate(R.layout.add_tick, null)
+            rr.addView(v)
+        }
+
+        val url: LinearLayout = addDialog.findViewById(R.id.add_url)
+        url.setOnClickListener {
+            addDialog.dismiss()
+            binding.url.visibility = View.VISIBLE
+
+        }
+
+
+        val place: LinearLayout = addDialog.findViewById(R.id.place)
+        place.setOnClickListener {
+            addDialog.dismiss()
+//            val autocompleteFragment =
+//                supportFragmentManager.findFragmentById(R.id.autocomplete_fragment)
+//                        as AutocompleteSupportFragment
+//
+//            // Specify the types of place data to return.
+//            autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME))
+//
+//            // Set up a PlaceSelectionListener to handle the response.
+//            autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+//
+//                override fun onPlaceSelected(place: Place) {
+//                    binding.place.text = place.name.toString()
+//                    binding.place.visibility = View.VISIBLE
+////                    Log.i(TAG, "Place: ${place.name}, ${place.id}")
+//                }
+//
+//                override fun onError(p0: Status) {
+//                    Log.i(TAG, "An error occurred: $p0")
+//                }
+//            })
+
+        }
+
 
 
         frame_white.setOnClickListener {
@@ -166,6 +277,7 @@ class AddNote : AppCompatActivity() {
             sandybrown.setImageResource(0)
             thistle.setImageResource(0)
             violet.setImageResource(0)
+            binding.addNote.setBackgroundColor(Color.parseColor("#FFFFFFFF"))
         }
 
         frame_lightsteelblue.setOnClickListener {
@@ -184,6 +296,7 @@ class AddNote : AppCompatActivity() {
             sandybrown.setImageResource(0)
             thistle.setImageResource(0)
             violet.setImageResource(0)
+            binding.addNote.setBackgroundColor(Color.parseColor("#B0C4DE"))
         }
 
         frame_aquamarine.setOnClickListener {
@@ -202,6 +315,7 @@ class AddNote : AppCompatActivity() {
             sandybrown.setImageResource(0)
             thistle.setImageResource(0)
             violet.setImageResource(0)
+            binding.addNote.setBackgroundColor(Color.parseColor("#7FFFD4"))
         }
 
         frame_grey.setOnClickListener {
@@ -220,6 +334,7 @@ class AddNote : AppCompatActivity() {
             sandybrown.setImageResource(0)
             thistle.setImageResource(0)
             violet.setImageResource(0)
+            binding.addNote.setBackgroundColor(Color.parseColor("#E8E9EB"))
         }
 
         frame_darkgrey.setOnClickListener {
@@ -238,6 +353,7 @@ class AddNote : AppCompatActivity() {
             sandybrown.setImageResource(0)
             thistle.setImageResource(0)
             violet.setImageResource(0)
+            binding.addNote.setBackgroundColor(Color.parseColor("#A9A9A9"))
         }
 
         frame_lightcyan.setOnClickListener {
@@ -256,6 +372,7 @@ class AddNote : AppCompatActivity() {
             sandybrown.setImageResource(0)
             thistle.setImageResource(0)
             violet.setImageResource(0)
+            binding.addNote.setBackgroundColor(Color.parseColor("#E0FFFF"))
         }
 
         frame_lightgoldenyellow.setOnClickListener {
@@ -274,6 +391,7 @@ class AddNote : AppCompatActivity() {
             sandybrown.setImageResource(0)
             thistle.setImageResource(0)
             violet.setImageResource(0)
+            binding.addNote.setBackgroundColor(Color.parseColor("#FAFAD2"))
         }
 
         frame_lightgreen.setOnClickListener {
@@ -292,6 +410,7 @@ class AddNote : AppCompatActivity() {
             sandybrown.setImageResource(0)
             thistle.setImageResource(0)
             violet.setImageResource(0)
+            binding.addNote.setBackgroundColor(Color.parseColor("#CEFAD0"))
         }
 
         frame_palegoldenrod.setOnClickListener {
@@ -310,6 +429,7 @@ class AddNote : AppCompatActivity() {
             sandybrown.setImageResource(0)
             thistle.setImageResource(0)
             violet.setImageResource(0)
+            binding.addNote.setBackgroundColor(Color.parseColor("#EEE8AA"))
         }
 
         frame_palevioletred.setOnClickListener {
@@ -328,6 +448,7 @@ class AddNote : AppCompatActivity() {
             sandybrown.setImageResource(0)
             thistle.setImageResource(0)
             violet.setImageResource(0)
+            binding.addNote.setBackgroundColor(Color.parseColor("#FFCBD1"))
         }
 
         frame_powderblue.setOnClickListener {
@@ -346,6 +467,7 @@ class AddNote : AppCompatActivity() {
             sandybrown.setImageResource(0)
             thistle.setImageResource(0)
             violet.setImageResource(0)
+            binding.addNote.setBackgroundColor(Color.parseColor("#B0E0E6"))
         }
 
         frame_rosybrown.setOnClickListener {
@@ -364,6 +486,7 @@ class AddNote : AppCompatActivity() {
             sandybrown.setImageResource(0)
             thistle.setImageResource(0)
             violet.setImageResource(0)
+            binding.addNote.setBackgroundColor(Color.parseColor("#BC8F8F"))
         }
 
         frame_sandybrown.setOnClickListener {
@@ -382,6 +505,7 @@ class AddNote : AppCompatActivity() {
             rosybrown.setImageResource(0)
             thistle.setImageResource(0)
             violet.setImageResource(0)
+            binding.addNote.setBackgroundColor(Color.parseColor("#F4A460"))
         }
 
         frame_thistle.setOnClickListener {
@@ -400,6 +524,7 @@ class AddNote : AppCompatActivity() {
             rosybrown.setImageResource(0)
             sandybrown.setImageResource(0)
             violet.setImageResource(0)
+            binding.addNote.setBackgroundColor(Color.parseColor("#D8BFD8"))
         }
 
         frame_violet.setOnClickListener {
@@ -418,8 +543,24 @@ class AddNote : AppCompatActivity() {
             rosybrown.setImageResource(0)
             sandybrown.setImageResource(0)
             thistle.setImageResource(0)
+            binding.addNote.setBackgroundColor(Color.parseColor("#EFC9FE"))
+        }
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        binding.setImage.visibility = View.VISIBLE
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            val imageBitmap = data?.extras?.get("data") as Bitmap
+            binding.setImage.setImageBitmap(imageBitmap)
+        }
+        else if(requestCode == SELECT_PICTURE && resultCode == RESULT_OK){
+            val selectedImageUri: Uri? = data?.data
+            if (null != selectedImageUri) {
+                binding.setImage.setImageURI(selectedImageUri)
+            }
         }
 
-
     }
+
+
 }
