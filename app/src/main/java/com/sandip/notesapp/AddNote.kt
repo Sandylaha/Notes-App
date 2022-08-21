@@ -1,7 +1,6 @@
 package com.sandip.notesapp
 
 import android.app.Dialog
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -10,20 +9,17 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
+import android.text.InputType
+import android.text.format.DateFormat.is24HourFormat
 import android.view.*
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.common.api.Status
-import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import androidx.core.view.marginLeft
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import com.sandip.notesapp.databinding.ActivityAddNoteBinding
 
 
@@ -58,26 +54,12 @@ open class AddNote : AppCompatActivity() {
             }
         }
         binding.delete.setOnClickListener {
-            val builder = AlertDialog.Builder(this)
-            builder.setMessage("Are you sure to delete the note permanently ?")
-                .setCancelable(false)
-                .setPositiveButton("Yes") { _, _ ->
-                    Snackbar.make(binding.root, "Note has been deleted", Snackbar.LENGTH_LONG).setAction("Action", null).show()
-
-//            viewModal.deleteNote(entityPerson)
-//            Toast.makeText(this, "${entityPerson.name} Deleted", Toast.LENGTH_LONG).show()
-                }
-                .setNegativeButton("No") { dialog, _ ->
-                    dialog.dismiss()
-                }
-            val alert = builder.create()
-            alert.show()
+            alertDelete()
         }
 
 
 
         binding.addNote2.setOnClickListener {
-
 
 
             finish()
@@ -129,8 +111,8 @@ open class AddNote : AppCompatActivity() {
             imageDialog.window?.setGravity(Gravity.BOTTOM)
 
         }
-        val camera:LinearLayout  = imageDialog.findViewById(R.id.take_photo)
-        val photo:LinearLayout  = imageDialog.findViewById(R.id.add_photo)
+        val camera: LinearLayout = imageDialog.findViewById(R.id.take_photo)
+        val photo: LinearLayout = imageDialog.findViewById(R.id.add_photo)
 
 
 
@@ -150,55 +132,52 @@ open class AddNote : AppCompatActivity() {
         }
 
 
-
-
-
-
         val frame_white: FrameLayout = colorDialog.findViewById(R.id.frame_white)
-        val white:ImageView  = colorDialog.findViewById(R.id.white)
+        val white: ImageView = colorDialog.findViewById(R.id.white)
         white.setImageResource(R.drawable.ic_baseline_done_24)
 
         val frame_lightsteelblue: FrameLayout = colorDialog.findViewById(R.id.frame_lightsteelblue)
-        val lightsteelblue:ImageView  = colorDialog.findViewById(R.id.lightsteelblue)
+        val lightsteelblue: ImageView = colorDialog.findViewById(R.id.lightsteelblue)
 
         val frame_aquamarine: FrameLayout = colorDialog.findViewById(R.id.frame_aquamarine)
-        val aquamarine:ImageView  = colorDialog.findViewById(R.id.aquamarine)
+        val aquamarine: ImageView = colorDialog.findViewById(R.id.aquamarine)
 
         val frame_grey: FrameLayout = colorDialog.findViewById(R.id.frame_grey)
-        val grey:ImageView  = colorDialog.findViewById(R.id.grey)
+        val grey: ImageView = colorDialog.findViewById(R.id.grey)
 
         val frame_darkgrey: FrameLayout = colorDialog.findViewById(R.id.frame_darkgrey)
-        val darkgrey:ImageView  = colorDialog.findViewById(R.id.darkgrey)
+        val darkgrey: ImageView = colorDialog.findViewById(R.id.darkgrey)
 
         val frame_lightcyan: FrameLayout = colorDialog.findViewById(R.id.frame_lightcyan)
-        val lightcyan:ImageView  = colorDialog.findViewById(R.id.lightcyan)
+        val lightcyan: ImageView = colorDialog.findViewById(R.id.lightcyan)
 
-        val frame_lightgoldenyellow: FrameLayout = colorDialog.findViewById(R.id.frame_lightgoldenyellow)
-        val lightgoldenyellow:ImageView  = colorDialog.findViewById(R.id.lightgoldenyellow)
+        val frame_lightgoldenyellow: FrameLayout =
+            colorDialog.findViewById(R.id.frame_lightgoldenyellow)
+        val lightgoldenyellow: ImageView = colorDialog.findViewById(R.id.lightgoldenyellow)
 
         val frame_lightgreen: FrameLayout = colorDialog.findViewById(R.id.frame_lightgreen)
-        val lightgreen:ImageView  = colorDialog.findViewById(R.id.lightgreen)
+        val lightgreen: ImageView = colorDialog.findViewById(R.id.lightgreen)
 
         val frame_palegoldenrod: FrameLayout = colorDialog.findViewById(R.id.frame_palegoldenrod)
-        val palegoldenrod:ImageView  = colorDialog.findViewById(R.id.palegoldenrod)
+        val palegoldenrod: ImageView = colorDialog.findViewById(R.id.palegoldenrod)
 
         val frame_palevioletred: FrameLayout = colorDialog.findViewById(R.id.frame_palevioletred)
-        val palevioletred:ImageView  = colorDialog.findViewById(R.id.palevioletred)
+        val palevioletred: ImageView = colorDialog.findViewById(R.id.palevioletred)
 
         val frame_powderblue: FrameLayout = colorDialog.findViewById(R.id.frame_powderblue)
-        val powderblue:ImageView  = colorDialog.findViewById(R.id.powderblue)
+        val powderblue: ImageView = colorDialog.findViewById(R.id.powderblue)
 
         val frame_rosybrown: FrameLayout = colorDialog.findViewById(R.id.frame_rosybrown)
-        val rosybrown:ImageView  = colorDialog.findViewById(R.id.rosybrown)
+        val rosybrown: ImageView = colorDialog.findViewById(R.id.rosybrown)
 
         val frame_sandybrown: FrameLayout = colorDialog.findViewById(R.id.frame_sandybrown)
-        val sandybrown:ImageView  = colorDialog.findViewById(R.id.sandybrown)
+        val sandybrown: ImageView = colorDialog.findViewById(R.id.sandybrown)
 
         val frame_thistle: FrameLayout = colorDialog.findViewById(R.id.frame_thistle)
-        val thistle:ImageView  = colorDialog.findViewById(R.id.thistle)
+        val thistle: ImageView = colorDialog.findViewById(R.id.thistle)
 
         val frame_violet: FrameLayout = colorDialog.findViewById(R.id.frame_violet)
-        val violet:ImageView  = colorDialog.findViewById(R.id.violet)
+        val violet: ImageView = colorDialog.findViewById(R.id.violet)
 
 
         val tickBox: LinearLayout = addDialog.findViewById(R.id.tick_box)
@@ -225,39 +204,123 @@ open class AddNote : AppCompatActivity() {
             rr.addView(v)
         }
 
+
+
         val url: LinearLayout = addDialog.findViewById(R.id.add_url)
         url.setOnClickListener {
             addDialog.dismiss()
-            binding.url.visibility = View.VISIBLE
+            showAlert()
 
         }
 
 
-        val place: LinearLayout = addDialog.findViewById(R.id.place)
-        place.setOnClickListener {
-            addDialog.dismiss()
+
+        //        val apiKey = getString(R.string.api_key)
+//        if (!Places.isInitialized()) {
+//            Places.initialize(applicationContext, apiKey)
+//        }
+//        val place: LinearLayout = addDialog.findViewById(R.id.place)
+//        place.setOnClickListener {
+//            addDialog.dismiss()
+//            var binding1: PlaceBinding = PlaceBinding.inflate(layoutInflater)
+//            setContentView(binding1.root)
+//
 //            val autocompleteFragment =
-//                supportFragmentManager.findFragmentById(R.id.autocomplete_fragment)
+//             supportFragmentManager.findFragmentById(R.id.autocomplete_fragment)
 //                        as AutocompleteSupportFragment
 //
 //            // Specify the types of place data to return.
 //            autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME))
+//            Log.d(TAG, "An error occurred:")
 //
 //            // Set up a PlaceSelectionListener to handle the response.
 //            autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
 //
 //                override fun onPlaceSelected(place: Place) {
-//                    binding.place.text = place.name.toString()
-//                    binding.place.visibility = View.VISIBLE
-////                    Log.i(TAG, "Place: ${place.name}, ${place.id}")
+////                    binding.place.text = place.name.toString()
+////                    binding.place.visibility = View.VISIBLE
+//                    Log.i(TAG, "Place: ${place.name}, ${place.id}")
 //                }
 //
 //                override fun onError(p0: Status) {
 //                    Log.i(TAG, "An error occurred: $p0")
 //                }
 //            })
+//            Log.d(TAG, "An error occurred:2")
+//
+//        }
+        val datePicker =
+            MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Select date")
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .build()
+
+        val isSystem24Hour = is24HourFormat(this)
+        val clockFormat = if (isSystem24Hour) TimeFormat.CLOCK_24H else TimeFormat.CLOCK_12H
+
+        val timePicker =
+            MaterialTimePicker.Builder()
+                .setTimeFormat(clockFormat)
+                .setHour(12)
+                .setMinute(10)
+                .setTitleText("Select time")
+                .build()
+
+        val reminder: LinearLayout = addDialog.findViewById(R.id.reminder)
+
+        binding.reminder.setOnClickListener {
+            addDialog.dismiss()
+            datePicker.show(supportFragmentManager, "Date_Picker")
+            timePicker.show(supportFragmentManager, "Time_Piker");
+        }
+
+        binding.reminder.setOnLongClickListener {
+            alertDelete()
+            true
+        }
+
+
+        reminder.setOnClickListener {
+            addDialog.dismiss()
+            datePicker.show(supportFragmentManager, "Date_Picker")
+            timePicker.show(supportFragmentManager, "Time_Piker");
 
         }
+
+
+        datePicker.addOnPositiveButtonClickListener {
+            // Respond to positive button click.
+            binding.date.text = datePicker.headerText+","
+            binding.reminder.visibility = View.VISIBLE
+
+        }
+        datePicker.addOnNegativeButtonClickListener {
+            // Respond to negative button click.
+        }
+        datePicker.addOnCancelListener {
+            // Respond to cancel button click.
+        }
+        datePicker.addOnDismissListener {
+            // Respond to dismiss events.
+        }
+
+
+        timePicker.addOnPositiveButtonClickListener {
+            // call back code
+            binding.time.text = "${timePicker.hour}:${timePicker.minute}"
+        }
+        timePicker.addOnNegativeButtonClickListener {
+            // call back code
+        }
+        timePicker.addOnCancelListener {
+            // call back code
+        }
+        timePicker.addOnDismissListener {
+            // call back code
+        }
+
+
+
 
 
 
@@ -546,21 +609,70 @@ open class AddNote : AppCompatActivity() {
             binding.addNote.setBackgroundColor(Color.parseColor("#EFC9FE"))
         }
     }
+
+    private fun showAlert() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("URL")
+
+        val input = EditText(this)
+
+        input.inputType = InputType.TYPE_TEXT_VARIATION_URI
+        input.hint = "https://"
+        input.background = null
+        builder.setView(input)
+
+        builder.setPositiveButton(
+            "OK"
+        ) {
+                _, _ ->
+            if(input.text.isNotEmpty()) {
+                binding.urlLink.text = input.text.toString()
+                binding.urlLayout.visibility = View.VISIBLE
+            }
+            else{
+                Toast.makeText(applicationContext, "Please enter a link", Toast.LENGTH_LONG).show()
+                showAlert()
+            }
+        }
+        builder.setNegativeButton(
+            "Cancel"
+        ) { dialog, which -> dialog.cancel() }
+
+        builder.show()    }
+
+    private fun alertDelete() {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage("Are you sure to delete the note permanently ?")
+            .setCancelable(false)
+            .setPositiveButton("Yes") { _, _ ->
+                Snackbar.make(binding.root, "Note has been deleted", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+
+//            viewModal.deleteNote(entityPerson)
+//            Toast.makeText(this, "${entityPerson.name} Deleted", Toast.LENGTH_LONG).show()
+            }
+            .setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+        val alert = builder.create()
+        alert.show()    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         binding.setImage.visibility = View.VISIBLE
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             val imageBitmap = data?.extras?.get("data") as Bitmap
             binding.setImage.setImageBitmap(imageBitmap)
-        }
-        else if(requestCode == SELECT_PICTURE && resultCode == RESULT_OK){
+        } else if (requestCode == SELECT_PICTURE && resultCode == RESULT_OK) {
             val selectedImageUri: Uri? = data?.data
             if (null != selectedImageUri) {
                 binding.setImage.setImageURI(selectedImageUri)
             }
         }
+        else {
+            binding.setImage.visibility = View.GONE
+        }
 
     }
-
 
 }

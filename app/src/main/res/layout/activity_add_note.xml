@@ -7,34 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".AddNote">
 
-
-    <!--    <LinearLayout-->
-    <!--        android:layout_width="402dp"-->
-    <!--        android:layout_height="39dp"-->
-    <!--        android:layout_marginTop="5dp"-->
-    <!--        android:padding="8dp"-->
-    <!--        app:layout_constraintEnd_toStartOf="@+id/guideline5"-->
-    <!--        app:layout_constraintHorizontal_bias="0.495"-->
-    <!--        app:layout_constraintStart_toStartOf="@+id/guideline4"-->
-    <!--        app:layout_constraintTop_toTopOf="parent">-->
-
-
-    <!--    </LinearLayout>-->
-
-    <!--    <LinearLayout-->
-    <!--        android:id="@+id/layoutEdit1"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:orientation="horizontal"-->
-    <!--        android:padding="8dp"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toStartOf="@+id/guideline5"-->
-    <!--        app:layout_constraintStart_toStartOf="@+id/guideline4">-->
-
-
-    <!--    </LinearLayout>-->
-
-
     <ImageView
         android:id="@+id/back"
         android:layout_width="25dp"
@@ -63,36 +35,13 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <!--    <LinearLayout-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="740dp"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toStartOf="@+id/guideline5"-->
-    <!--        app:layout_constraintStart_toStartOf="@+id/guideline4"-->
-    <!--        app:layout_constraintTop_toTopOf="parent">-->
-
-    <!--        <ScrollView-->
-    <!--            android:layout_width="363dp"-->
-    <!--            android:layout_margin="15dp"-->
-    <!--            android:layout_height="match_parent"-->
-    <!--            app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--            app:layout_constraintEnd_toEndOf="parent"-->
-    <!--            app:layout_constraintStart_toStartOf="parent"-->
-    <!--            app:layout_constraintTop_toTopOf="parent">-->
-
-    <!--            <LinearLayout-->
-    <!--                android:layout_width="match_parent"-->
-    <!--                android:layout_height="match_parent"-->
-    <!--                android:orientation="vertical">-->
-
-
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="640dp"
+        android:layout_height="match_parent"
         android:layout_marginTop="65dp"
-
+        android:layout_marginBottom="80dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toTopOf="parent">
@@ -100,14 +49,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_margin="15dp">
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/set_image"
                 android:layout_width="match_parent"
                 android:layout_height="500dp"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <EditText
                 android:id="@+id/title"
@@ -117,9 +67,7 @@
                 android:hint="Title"
                 android:scrollbars="none"
                 android:textSize="24dp"
-                android:theme="@style/SearchView"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="123dp" />
+                android:theme="@style/SearchView" />
 
             <!--            </LinearLayout>-->
             <!--        </ScrollView>-->
@@ -131,43 +79,42 @@
                 android:id="@+id/body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:background="@null"
                 android:hint="Body"
                 android:textSize="20dp"
-                android:layout_marginTop="10dp"
-                android:theme="@style/SearchView"
-                />
+                android:theme="@style/SearchView" />
 
             <LinearLayout
                 android:id="@+id/checkbox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginTop="10dp"
-         android:visibility="gone"
-                >
+                android:orientation="horizontal"
+                android:visibility="gone">
 
-                <CheckBox android:id="@+id/checkbox_meat"
+                <CheckBox
+                    android:id="@+id/checkbox_meat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:textSize="16dp"
-                    android:hint="Enter Description"
                     android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
                     android:background="@null"
-                    android:theme="@style/SearchView"/>
+                    android:hint="Enter Description"
+                    android:textSize="16dp"
+                    android:theme="@style/SearchView" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/more"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
             </LinearLayout>
 
@@ -175,49 +122,91 @@
                 android:id="@+id/add_more"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_margin="10dp"
                 android:layout_marginTop="30dp"
-                android:visibility="gone"
-                >
+                android:orientation="horizontal"
+                android:visibility="gone">
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:src="@drawable/ic_baseline_add_24"/>
+                    android:src="@drawable/ic_baseline_add_24" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="Add more"
                     android:layout_gravity="center"
-                    />
+                    android:layout_marginLeft="10dp"
+                    android:text="Add more" />
             </LinearLayout>
+        <LinearLayout
+            android:id="@+id/url_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal"
+            android:visibility="gone"
+        >
 
-
-            <EditText
-                android:id="@+id/url"
-                android:inputType="textWebEmailAddress"
+            <TextView
+                android:id="@+id/urlLink"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:layout_marginTop="10dp"
-                android:hint="Add URL"
                 android:background="@null"
-                android:visibility="gone"
-                android:theme="@style/SearchView"/>
-
+                android:autoLink="all"
+                android:textSize="16sp"
+                android:textColor="@color/blue"
+                android:theme="@style/SearchView"
+              />
+        </LinearLayout>
             <TextView
                 android:id="@+id/place"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16dp"
                 android:layout_marginTop="10dp"
                 android:background="@null"
-                android:visibility="gone"
-                android:theme="@style/SearchView"/>
+                android:textSize="16dp"
+                android:theme="@style/SearchView"
+                android:visibility="gone" />
 
+            <LinearLayout
+                android:id="@+id/reminder"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/search_view"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/clock"
+                    android:layout_width="25dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/ic_baseline_access_alarm_24" />
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@null"
+                    android:textSize="16dp"
+                    android:theme="@style/SearchView" />
+
+                <TextView
+                    android:id="@+id/time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+
+                    android:layout_marginTop="10dp"
+                    android:background="@null"
+                    android:textSize="16dp"
+                    android:theme="@style/SearchView" />
+            </LinearLayout>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
@@ -240,6 +229,7 @@
             android:id="@+id/add"
             android:layout_width="25dp"
             android:layout_height="40dp"
+            android:layout_marginStart="5dp"
             android:layout_marginBottom="5dp"
             android:src="@drawable/ic_baseline_add_box_24"
             />
