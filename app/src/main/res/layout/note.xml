@@ -5,37 +5,44 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<!--    <androidx.cardview.widget.CardView-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginLeft="11dp"-->
-<!--        android:layout_marginRight="11dp"-->
-<!--        android:layout_marginTop="7dp"-->
-<!--        android:layout_marginBottom="7dp"-->
-<!--        app:cardElevation="@dimen/cardview_default_elevation"-->
-<!--        app:cardCornerRadius="10dp"-->
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="11dp"
+        android:layout_marginRight="11dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="7dp"
+        app:cardElevation="@dimen/cardview_default_elevation"
+        app:cardCornerRadius="10dp"
 
-<!--        >-->
+        >
 
-<!--        <RelativeLayout-->
-<!--            android:background="?android:attr/selectableItemBackground"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content">-->
+        <RelativeLayout
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-<!--            <ImageView-->
-<!--                android:id="@+id/img"-->
-<!--                android:transitionName="img"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="200dp"-->
-<!--                android:scaleType="centerCrop"-->
-<!--                tools:ignore="UnusedAttribute" />-->
+            <ImageView
+                android:id="@+id/img22"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:scaleType="centerCrop"
+                android:transitionName="img"
+                tools:ignore="UnusedAttribute" />
+
+            <TextView
+                android:id="@+id/titlecard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="fdsfdsfdsffdsf" />
+
 
 <!--            <ImageView-->
 <!--                android:id="@+id/shadow_bottom"-->
-<!--                android:src="@drawable/bottom_shadow"-->
-<!--                android:layout_alignBottom="@id/img"-->
 <!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="80dp" />-->
+<!--                android:layout_height="80dp"-->
+<!--                android:layout_alignBottom="@id/img22"-->
+<!--                android:src="@drawable/add" />-->
 
 <!--            <ProgressBar-->
 <!--                android:id="@+id/prograss_load_photo"-->
@@ -66,11 +73,11 @@
 <!--                android:id="@+id/layoutDate"-->
 <!--                android:layout_width="wrap_content"-->
 <!--                android:layout_height="wrap_content"-->
-<!--                android:layout_below="@id/img"-->
+<!--                android:layout_below="@id/img22"-->
 <!--                android:layout_alignParentRight="true"-->
 <!--                android:layout_marginTop="-50dp"-->
 <!--                android:layout_marginRight="30dp"-->
-<!--                android:background="@drawable/round_white"-->
+<!--                android:background="@drawable/search_view"-->
 <!--                android:padding="3dp">-->
 
 <!--                <TextView-->
@@ -91,13 +98,13 @@
 <!--                android:layout_height="wrap_content"-->
 <!--                android:fontFamily="sans-serif-light"-->
 <!--                android:textStyle="bold"-->
-<!--                android:textColor="@color/colorTextTitle"-->
+<!--                android:textColor="@color/blue"-->
 <!--                android:layout_marginLeft="16dp"-->
 <!--                android:layout_marginRight="16dp"-->
 <!--                android:text="title"-->
 <!--                android:textSize="17sp"-->
 <!--                android:layout_marginTop="10dp"-->
-<!--                android:layout_below="@id/img"-->
+<!--                android:layout_below="@id/img22"-->
 <!--                android:id="@+id/title" />-->
 
 
@@ -122,7 +129,7 @@
 <!--                android:layout_marginBottom="10dp"-->
 <!--                android:fontFamily="sans-serif-light"-->
 <!--                android:textStyle="bold"-->
-<!--                android:textColor="@color/colorTextTitle"-->
+<!--                android:textColor="@color/blue"-->
 <!--                android:maxLines="1"-->
 <!--                android:drawablePadding="10dp"-->
 <!--                android:singleLine="true"-->
@@ -145,8 +152,8 @@
 <!--                android:text="time" />-->
 
 
-<!--        </RelativeLayout>-->
+        </RelativeLayout>
 
-<!--    </androidx.cardview.widget.CardView>-->
+    </androidx.cardview.widget.CardView>
 
 </FrameLayout>

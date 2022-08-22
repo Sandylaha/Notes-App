@@ -1,39 +1,56 @@
-package com.sandip.notesapp
+package com.sandip.notesapp.ui
 
-import android.app.Dialog
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.InputType
 import android.text.format.DateFormat.is24HourFormat
 import android.view.*
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.marginLeft
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import com.sandip.notesapp.R
 import com.sandip.notesapp.databinding.ActivityAddNoteBinding
+import com.sandip.notesapp.model.NoteEntity
+import java.util.*
 
 
-open class AddNote : AppCompatActivity() {
+//const val CHANNEL_ID: String = "23"
+//const val CHANNEL_NAME: String = "Laha"
+//const val CHANNEL_DESCRIPTION = "Notification Message"
+
+@Suppress("DEPRECATION")
+class AddNote : AppCompatActivity() {
 
 
     private lateinit var binding: ActivityAddNoteBinding
     private val REQUEST_IMAGE_CAPTURE = 1
     private val SELECT_PICTURE = 2
-    private val AUTOCOMPLETE_REQUEST_CODE = 3
+    //    private val AUTOCOMPLETE_REQUEST_CODE = 3
+
+
+
+    private lateinit var noteViewModel: com.sandip.notesapp.viewmodel.NoteViewModel
+    private var noteID = -1
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddNoteBinding.inflate(layoutInflater)
         setContentView(binding.root)
+//        createNotificationChannel()
 
         binding.back.setOnClickListener {
             finish()
@@ -53,17 +70,8 @@ open class AddNote : AppCompatActivity() {
                 Toast.makeText(this, "Hmm.. Sorry, \nCannot be share", Toast.LENGTH_SHORT).show()
             }
         }
-        binding.delete.setOnClickListener {
-            alertDelete()
-        }
 
 
-
-        binding.addNote2.setOnClickListener {
-
-
-            finish()
-        }
 
         val colorDialog = Dialog(this)
         colorDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -189,17 +197,9 @@ open class AddNote : AppCompatActivity() {
 
         binding.addMore.setOnClickListener {
 
-            var linf: LayoutInflater
-            val rr: LinearLayout
+            val linf = LayoutInflater.from(this)
 
-            linf = applicationContext.getSystemService(
-                Context.LAYOUT_INFLATER_SERVICE
-            ) as LayoutInflater
-            linf = LayoutInflater.from(this)
-
-            rr = findViewById<View>(R.id.more) as LinearLayout
-
-
+            val rr: LinearLayout = findViewById<View>(R.id.more) as LinearLayout
             val v: View = linf.inflate(R.layout.add_tick, null)
             rr.addView(v)
         }
@@ -209,7 +209,7 @@ open class AddNote : AppCompatActivity() {
         val url: LinearLayout = addDialog.findViewById(R.id.add_url)
         url.setOnClickListener {
             addDialog.dismiss()
-            showAlert()
+            showAlert("url")
 
         }
 
@@ -219,9 +219,10 @@ open class AddNote : AppCompatActivity() {
 //        if (!Places.isInitialized()) {
 //            Places.initialize(applicationContext, apiKey)
 //        }
-//        val place: LinearLayout = addDialog.findViewById(R.id.place)
-//        place.setOnClickListener {
-//            addDialog.dismiss()
+        val place: LinearLayout = addDialog.findViewById(R.id.place)
+        place.setOnClickListener {
+            addDialog.dismiss()
+            showAlert("place")
 //            var binding1: PlaceBinding = PlaceBinding.inflate(layoutInflater)
 //            setContentView(binding1.root)
 //
@@ -248,7 +249,12 @@ open class AddNote : AppCompatActivity() {
 //            })
 //            Log.d(TAG, "An error occurred:2")
 //
-//        }
+
+
+
+
+
+        }
         val datePicker =
             MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Select date")
@@ -271,7 +277,19 @@ open class AddNote : AppCompatActivity() {
         binding.reminder.setOnClickListener {
             addDialog.dismiss()
             datePicker.show(supportFragmentManager, "Date_Picker")
-            timePicker.show(supportFragmentManager, "Time_Piker");
+            timePicker.show(supportFragmentManager, "Time_Piker")
+
+
+
+
+
+
+
+
+
+
+
+
         }
 
         binding.reminder.setOnLongClickListener {
@@ -283,15 +301,17 @@ open class AddNote : AppCompatActivity() {
         reminder.setOnClickListener {
             addDialog.dismiss()
             datePicker.show(supportFragmentManager, "Date_Picker")
-            timePicker.show(supportFragmentManager, "Time_Piker");
+            timePicker.show(supportFragmentManager, "Time_Piker")
 
         }
 
 
         datePicker.addOnPositiveButtonClickListener {
             // Respond to positive button click.
-            binding.date.text = datePicker.headerText+","
+            (datePicker.headerText).also { binding.date.text = it }
             binding.reminder.visibility = View.VISIBLE
+//            createNotificationChannel()
+//             displaySimpleNotification()
 
         }
         datePicker.addOnNegativeButtonClickListener {
@@ -307,7 +327,7 @@ open class AddNote : AppCompatActivity() {
 
         timePicker.addOnPositiveButtonClickListener {
             // call back code
-            binding.time.text = "${timePicker.hour}:${timePicker.minute}"
+            "${timePicker.hour}:${timePicker.minute}".also { binding.time.text = it }
         }
         timePicker.addOnNegativeButtonClickListener {
             // call back code
@@ -323,6 +343,74 @@ open class AddNote : AppCompatActivity() {
 
 
 
+
+
+
+
+
+
+
+        noteViewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+        )[com.sandip.notesapp.viewmodel.NoteViewModel::class.java]
+
+        val noteType = intent.getStringExtra("noteType")
+        if (noteType.equals("Edit")) {
+            val noteTitle = intent.getStringExtra("noteTitle")
+//            val noteDescription = intent.getStringExtra("noteDescription")
+            noteID = intent.getIntExtra("noteId", -1)
+//            saveBtn.text = "Update Details"
+            binding.titleMain.setText(noteTitle)
+//            noteEdt.setText(noteDescription)
+        }
+//        else {
+//            saveBtn.text = "Save Details"
+//        }
+
+
+        binding.addNote2.setOnClickListener {
+            val title = binding.titleMain.text.toString()
+//            val body = binding.body
+//            val tickDesc = binding.tick_Desc
+//            val url = binding.urlLink
+//            val date = binding.date
+//            val time = binding.time
+//            val location = binding.place_input
+//            val clr = binding.time
+//            val image =binding.set_image
+
+
+
+            if (noteType.equals("Edit")) {
+                if (title.isNotEmpty())// && noteDescription.isNotEmpty()) {
+                {
+                    val updatedNote = NoteEntity(title)//, noteDescription)
+                    updatedNote.id = noteID
+                    noteViewModel.updateNote(updatedNote)
+                    Toast.makeText(this, "Details Updated..", Toast.LENGTH_LONG).show()
+                }
+            } else {
+                if (title.isNotEmpty())// && noteDescription.isNotEmpty())
+                {
+                    noteViewModel.addNote(NoteEntity(title))//, noteDescription))
+                    Toast.makeText(applicationContext, "$title Added", Toast.LENGTH_LONG).show()
+
+                }}
+
+            startActivity(Intent(applicationContext, MainActivity::class.java))
+            this.finish()
+
+        }
+
+        binding.location.setOnClickListener {
+            val uri = "geo:0,0?q="+binding.placeInput.text
+            val gmmIntentUri =
+                Uri.parse(uri)
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            startActivity(mapIntent)
+        }
 
         frame_white.setOnClickListener {
             white.setImageResource(R.drawable.ic_baseline_done_24)
@@ -610,33 +698,55 @@ open class AddNote : AppCompatActivity() {
         }
     }
 
-    private fun showAlert() {
+
+    private fun showAlert(s: String) {
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("URL")
-
         val input = EditText(this)
-
         input.inputType = InputType.TYPE_TEXT_VARIATION_URI
-        input.hint = "https://"
         input.background = null
         builder.setView(input)
 
-        builder.setPositiveButton(
-            "OK"
-        ) {
-                _, _ ->
-            if(input.text.isNotEmpty()) {
-                binding.urlLink.text = input.text.toString()
-                binding.urlLayout.visibility = View.VISIBLE
+        if(s=="url"){
+            builder.setTitle("URL")
+            input.hint = "https://"
+            builder.setPositiveButton(
+                "OK"
+            ) {
+                    _, _ ->
+                if(input.text.isNotEmpty()) {
+                    binding.urlLink.text = input.text.toString()
+                    binding.urlLayout.visibility = View.VISIBLE
+                }
+                else{
+                    Toast.makeText(applicationContext, "Please enter a link", Toast.LENGTH_LONG).show()
+                    showAlert("url")
+                }
             }
-            else{
-                Toast.makeText(applicationContext, "Please enter a link", Toast.LENGTH_LONG).show()
-                showAlert()
+
+
+        }
+        else if(s=="place"){
+            builder.setTitle("Place")
+            input.hint = ""
+            builder.setPositiveButton(
+                "OK"
+            ) {
+                    _, _ ->
+                if(input.text.isNotEmpty()) {
+                    binding.placeInput.text = input.text.toString()
+                    binding.location.visibility = View.VISIBLE
+                }
+                else{
+                    Toast.makeText(applicationContext, "Please enter a place", Toast.LENGTH_LONG).show()
+                    showAlert("place")
+                }
             }
         }
+
+
         builder.setNegativeButton(
             "Cancel"
-        ) { dialog, which -> dialog.cancel() }
+        ) { dialog, _ -> dialog.cancel() }
 
         builder.show()    }
 
@@ -657,10 +767,11 @@ open class AddNote : AppCompatActivity() {
         val alert = builder.create()
         alert.show()    }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         binding.setImage.visibility = View.VISIBLE
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+        if ((requestCode == REQUEST_IMAGE_CAPTURE) && (resultCode == RESULT_OK)) {
             val imageBitmap = data?.extras?.get("data") as Bitmap
             binding.setImage.setImageBitmap(imageBitmap)
         } else if (requestCode == SELECT_PICTURE && resultCode == RESULT_OK) {
@@ -674,5 +785,96 @@ open class AddNote : AppCompatActivity() {
         }
 
     }
+
+//    private fun createNotificationChannel() {
+//        //Create Notification channel for SDK above 25
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            val channel =
+//                NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH)
+//            channel.description = CHANNEL_DESCRIPTION
+//            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+//            notificationManager.createNotificationChannel(channel)
+//        }
+//    }
+//
+//    @RequiresApi(Build.VERSION_CODES.M)
+//    private fun displaySimpleNotification() {
+//
+//        val notificationIntent = Intent(this, Notification::class.java).apply {
+//            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//        }
+//        val pendingNotificationIntent: PendingIntent = PendingIntent.getBroadcast(
+//            this,
+//            0,
+//            notificationIntent,
+//            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+//        )
+//
+//        val title = binding.title.text.toString()
+//        val message = binding.body.text.toString()
+//        notificationIntent.putExtra(titleExtra, title)
+//        notificationIntent.putExtra(messageExtra, message)
+////        val titleStatusChangeListener= binding.datePicker.year
+//
+//        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+//        val time = getTime()
+//        alarmManager.setExactAndAllowWhileIdle(
+//            AlarmManager.RTC_WAKEUP,
+//            time,
+//            pendingNotificationIntent
+//        )
+//        showAlert(
+//            time,
+//            title,
+//            message
+//        )
+//    }
+//
+//    private fun showAlert(time: Long, title: String, message: String) {
+//        val date = Date(time)
+//        val dateFormat = android.text.format.DateFormat.getLongDateFormat(this)
+//        val timeFormat = android.text.format.DateFormat.getTimeFormat(this)
+//
+//        android.app.AlertDialog.Builder(this)
+//            .setTitle("")
+//            .setMessage(
+//                "Title: " + title + "\nMessage " + message + "\nAt " + dateFormat.format(
+//                    date
+//                ) + " " + timeFormat.format(date)
+//            )
+//            .setPositiveButton("Okay") { _, _ -> }
+//            .show()
+//    }
+//
+//    @RequiresApi(Build.VERSION_CODES.M)
+//    private fun getTime(): Long {
+//
+////        val date = binding.date.text
+////        val delim = " "
+////        val list = date.split(delim)
+////
+////
+////
+////        val time = binding.time.text
+////        val delim2 = ":"
+////        val list2 = time.split(delim2)
+////
+////
+////        val calendar = Calendar.getInstance()
+////        calendar.set(2022,8,22,hour, minute)
+////        return calendar.timeInMillis
+//
+//
+//        val minute = binding.timePicker.minute
+//        val hour = binding.timePicker.hour
+//        val day = binding.datePicker.dayOfMonth
+//        val month = binding.datePicker.month
+//        val year = binding.datePicker.year
+//
+//        val calendar = Calendar.getInstance()
+//        calendar.set(year, month, day, hour, minute)
+//        return calendar.timeInMillis
+//    }
+
 
 }

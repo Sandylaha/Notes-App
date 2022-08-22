@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.1013189448441247" />
         <entry key="app/src/main/res/drawable-v24/color_aquamarine.xml" value="0.2695" />
         <entry key="app/src/main/res/drawable-v24/color_darkgrey.xml" value="0.2695" />
         <entry key="app/src/main/res/drawable-v24/color_default.xml" value="0.1735" />
@@ -55,6 +56,7 @@
         <entry key="app/src/main/res/layout/more_popup.xml" value="0.25" />
         <entry key="app/src/main/res/layout/nav_header.xml" value="0.2952991452991453" />
         <entry key="app/src/main/res/layout/note.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/notification.xml" value="0.1" />
         <entry key="app/src/main/res/layout/page.xml" value="0.2824786324786325" />
         <entry key="app/src/main/res/layout/place.xml" value="0.1" />
         <entry key="app/src/main/res/layout/url.xml" value="0.1" />

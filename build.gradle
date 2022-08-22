@@ -8,3 +8,16 @@ plugins {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext {
+    kotlin_version = '1.7.10'
+    activityVersion = '1.2.3'
+    appCompatVersion = '1.4.2'
+    constraintLayoutVersion = '2.1.4'
+    coreTestingVersion = '2.1.0'
+    coroutines = '1.6.1'
+    lifecycleVersion = '2.5.1'
+    materialVersion = '1.6.1'
+    roomVersion = '2.4.3'
+
+}
