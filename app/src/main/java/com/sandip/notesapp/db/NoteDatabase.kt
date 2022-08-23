@@ -4,8 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.sandip.notesapp.adapter.Converters
 import com.sandip.notesapp.model.NoteEntity
 
+@TypeConverters(Converters::class)
 @Database(entities = [NoteEntity::class], version = 1, exportSchema = false)
 abstract class NoteDatabase : RoomDatabase() {
     abstract fun getData(): NoteDao

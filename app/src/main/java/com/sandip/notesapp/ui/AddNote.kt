@@ -1,10 +1,10 @@
 package com.sandip.notesapp.ui
 
 import android.app.*
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
@@ -17,7 +17,9 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -25,7 +27,7 @@ import com.google.android.material.timepicker.TimeFormat
 import com.sandip.notesapp.R
 import com.sandip.notesapp.databinding.ActivityAddNoteBinding
 import com.sandip.notesapp.model.NoteEntity
-import java.util.*
+import kotlinx.coroutines.launch
 
 
 //const val CHANNEL_ID: String = "23"
@@ -355,53 +357,60 @@ class AddNote : AppCompatActivity() {
             ViewModelProvider.AndroidViewModelFactory.getInstance(application)
         )[com.sandip.notesapp.viewmodel.NoteViewModel::class.java]
 
+
         val noteType = intent.getStringExtra("noteType")
         if (noteType.equals("Edit")) {
             val noteTitle = intent.getStringExtra("noteTitle")
-//            val noteDescription = intent.getStringExtra("noteDescription")
+            val noteDescription = intent.getStringExtra("noteDescription")
+            val tickDesc = intent.getStringExtra("tickDesc")
+            val url = intent.getStringExtra("url")
+            val date = intent.getStringExtra("date")
+            val time = intent.getStringExtra("time")
+            val place = intent.getStringExtra("location")
+            val clr = intent.getIntExtra("clr", 0)
+
+
+//            val image = intent.getStringExtra("image")
             noteID = intent.getIntExtra("noteId", -1)
+
+
 //            saveBtn.text = "Update Details"
+            binding.urlLayout.visibility = View.VISIBLE
+            binding.checkbox.visibility = View.VISIBLE
+            binding.reminder.visibility = View.VISIBLE
+            binding.location.visibility = View.VISIBLE
+
+
+
+
+
+
             binding.titleMain.setText(noteTitle)
-//            noteEdt.setText(noteDescription)
+            binding.body.setText(noteDescription)
+            binding.tickDesc.setText(tickDesc)
+            binding.urlLink.setText(url)
+            binding.date.setText(date)
+            binding.time.setText(time)
+            binding.placeInput.setText(place)
+            binding.addNote.setBackgroundColor(clr)//            binding.setImage.setText(noteTitle)
+
         }
-//        else {
-//            saveBtn.text = "Save Details"
-//        }
-
-
         binding.addNote2.setOnClickListener {
-            val title = binding.titleMain.text.toString()
-//            val body = binding.body
-//            val tickDesc = binding.tick_Desc
-//            val url = binding.urlLink
-//            val date = binding.date
-//            val time = binding.time
-//            val location = binding.place_input
-//            val clr = binding.time
-//            val image =binding.set_image
+            val title = binding.titleMain.text?.toString()
+            if((title!=null)
+                && (title.isNotEmpty())){
+                addtoDB(noteType)
+            }
+            else{
+
+                Snackbar.make(it, "Title can not be empty", Snackbar.LENGTH_LONG).setAction("Action", null).show()
+
+            }
 
 
-
-            if (noteType.equals("Edit")) {
-                if (title.isNotEmpty())// && noteDescription.isNotEmpty()) {
-                {
-                    val updatedNote = NoteEntity(title)//, noteDescription)
-                    updatedNote.id = noteID
-                    noteViewModel.updateNote(updatedNote)
-                    Toast.makeText(this, "Details Updated..", Toast.LENGTH_LONG).show()
-                }
-            } else {
-                if (title.isNotEmpty())// && noteDescription.isNotEmpty())
-                {
-                    noteViewModel.addNote(NoteEntity(title))//, noteDescription))
-                    Toast.makeText(applicationContext, "$title Added", Toast.LENGTH_LONG).show()
-
-                }}
-
-            startActivity(Intent(applicationContext, MainActivity::class.java))
-            this.finish()
 
         }
+
 
         binding.location.setOnClickListener {
             val uri = "geo:0,0?q="+binding.placeInput.text
@@ -698,6 +707,71 @@ class AddNote : AppCompatActivity() {
         }
     }
 
+    private fun addtoDB(noteType: String?) {
+
+//        else {
+//            saveBtn.text = "Save Details"
+//        }
+
+        val title = binding.titleMain.text?.toString()
+        val body = binding.body.text?.toString()
+        val tickDesc = binding.tickDesc?.text.toString()
+        val url = binding.urlLink.text?.toString()
+        val date = binding.date.text?.toString()
+        val time = binding.time.text?.toString()
+
+        val location = binding.placeInput.text?.toString()
+        val img = binding.setImage.drawable
+
+        val lay = findViewById<View>(R.id.addNote) as ConstraintLayout
+        val viewColor = lay.background as ColorDrawable
+        val colorId = viewColor.color
+
+//        val clr = binding.addNote.background?.toString()
+
+
+        val bitmap : Bitmap
+        if(img == null){
+            val conf = Bitmap.Config.ARGB_8888
+            bitmap = Bitmap.createBitmap(1, 1, conf)
+        }
+        else{
+            bitmap = (img as BitmapDrawable).bitmap
+        }
+
+        if (noteType.equals("Edit")){
+            lifecycleScope.launch {
+                val updatedNote = NoteEntity(title,body,tickDesc,url,date,time,location,colorId, bitmap)//, noteDescription)
+
+                updatedNote.id = noteID
+                noteViewModel.updateNote(updatedNote)
+            }
+            Toast.makeText(this, "Details Updated..", Toast.LENGTH_LONG).show()
+
+
+        }
+
+        else{
+
+
+            lifecycleScope.launch {
+                noteViewModel.addNote(
+                    NoteEntity(
+                        title, body, tickDesc, url, date, time, location, colorId,
+                        bitmap
+                    )
+                )//, noteDescription))
+                Toast.makeText(applicationContext, "$title Added", Toast.LENGTH_LONG)
+                    .show()
+
+            }
+
+
+        }
+        startActivity(Intent(applicationContext, MainActivity::class.java))
+        this.finish()
+    }
+
 
     private fun showAlert(s: String) {
         val builder = AlertDialog.Builder(this)
@@ -772,7 +846,9 @@ class AddNote : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         binding.setImage.visibility = View.VISIBLE
         if ((requestCode == REQUEST_IMAGE_CAPTURE) && (resultCode == RESULT_OK)) {
+
             val imageBitmap = data?.extras?.get("data") as Bitmap
+//            Bitmap.createScaledBitmap(imageBitmap, 50,50,true)
             binding.setImage.setImageBitmap(imageBitmap)
         } else if (requestCode == SELECT_PICTURE && resultCode == RESULT_OK) {
             val selectedImageUri: Uri? = data?.data
@@ -784,9 +860,11 @@ class AddNote : AppCompatActivity() {
             binding.setImage.visibility = View.GONE
         }
 
+
     }
 
-//    private fun createNotificationChannel() {
+
+    //    private fun createNotificationChannel() {
 //        //Create Notification channel for SDK above 25
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //            val channel =
@@ -875,6 +953,4 @@ class AddNote : AppCompatActivity() {
 //        calendar.set(year, month, day, hour, minute)
 //        return calendar.timeInMillis
 //    }
-
-
 }

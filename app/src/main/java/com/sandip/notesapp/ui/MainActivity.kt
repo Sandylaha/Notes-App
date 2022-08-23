@@ -15,7 +15,9 @@ import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.sandip.notesapp.R
 import com.sandip.notesapp.adapter.ViewAdapter
 import com.sandip.notesapp.databinding.ActivityMainBinding
@@ -118,7 +120,8 @@ class MainActivity : AppCompatActivity(), ViewAdapter.NoteClickInterface, ViewAd
         image2.setImageResource(R.drawable.ic_baseline_done_24)
 
         val notesRV = binding.appBarMain.recyclerView
-        notesRV.layoutManager = LinearLayoutManager(this)
+        notesRV.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+
 
 
         notesRV.adapter = noteRVAdapter
@@ -132,14 +135,16 @@ class MainActivity : AppCompatActivity(), ViewAdapter.NoteClickInterface, ViewAd
         viewModal.allData.observe(this) { list ->
             list?.let {
                 noteRVAdapter.updateList(it)
+                noteRVAdapter.setData(it)
+
             }
         }
 
-        viewModal.allData.observe(this) { list ->
-            list?.let {
-                noteRVAdapter.setData(it)
-            }
-        }
+//        viewModal.allData.observe(this) { list ->
+//            list?.let {
+//                noteRVAdapter.setData(it)
+//            }
+//        }
 
 
         binding.appBarMain.searchView2.setOnQueryTextListener(object :
@@ -174,7 +179,14 @@ class MainActivity : AppCompatActivity(), ViewAdapter.NoteClickInterface, ViewAd
         val intent = Intent(this@MainActivity, AddNote::class.java)
         intent.putExtra("noteType", "Edit")
         intent.putExtra("noteTitle", entityPerson.title)
-//        intent.putExtra("noteDescription", entityPerson.address)
+        intent.putExtra("noteDescription", entityPerson.body)
+        intent.putExtra("tickDesc", entityPerson.tickDesc)
+        intent.putExtra("url", entityPerson.url)
+        intent.putExtra("date", entityPerson.date)
+        intent.putExtra("time", entityPerson.time)
+        intent.putExtra("location", entityPerson.location)
+        intent.putExtra("clr", entityPerson.clr)
+        intent.putExtra("image", entityPerson.image)
         intent.putExtra("noteId", entityPerson.id)
         startActivity(intent)    }
 
