@@ -5,7 +5,7 @@
     android:id="@+id/addNote"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.AddNote">
+    tools:context=".ui.addnote.AddNote2">
 
     <ImageView
         android:id="@+id/back"
@@ -163,15 +163,15 @@
                     android:theme="@style/SearchView"
                     />
             </LinearLayout>
-<!--            <TextView-->
-<!--                android:id="@+id/place1"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="10dp"-->
-<!--                android:background="@null"-->
-<!--                android:textSize="16dp"-->
-<!--                android:theme="@style/SearchView"-->
-<!--                android:visibility="gone" />-->
+            <!--            <TextView-->
+            <!--                android:id="@+id/place1"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="10dp"-->
+            <!--                android:background="@null"-->
+            <!--                android:textSize="16dp"-->
+            <!--                android:theme="@style/SearchView"-->
+            <!--                android:visibility="gone" />-->
 
             <LinearLayout
                 android:id="@+id/reminder"
@@ -237,38 +237,38 @@
                     android:textSize="16dp"
                     android:theme="@style/SearchView" />
             </LinearLayout>
-<!--            <LinearLayout-->
-<!--                android:id="@+id/linearLayout2"-->
-<!--                android:layout_width="404dp"-->
-<!--                android:layout_height="269dp"-->
-<!--                android:layout_marginBottom="272dp"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                tools:layout_editor_absoluteX="7dp">-->
+            <!--            <LinearLayout-->
+            <!--                android:id="@+id/linearLayout2"-->
+            <!--                android:layout_width="404dp"-->
+            <!--                android:layout_height="269dp"-->
+            <!--                android:layout_marginBottom="272dp"-->
+            <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                tools:layout_editor_absoluteX="7dp">-->
 
-<!--                <DatePicker-->
-<!--                    android:id="@+id/date_picker"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center"-->
-<!--                    android:layout_marginHorizontal="-30dp"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:calendarViewShown="false"-->
-<!--                    android:datePickerMode="spinner"-->
-<!--                    android:scaleX=".7"-->
-<!--                    android:scaleY=".7" />-->
+            <!--                <DatePicker-->
+            <!--                    android:id="@+id/date_picker"-->
+            <!--                    android:layout_width="0dp"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_gravity="center"-->
+            <!--                    android:layout_marginHorizontal="-30dp"-->
+            <!--                    android:layout_weight="1"-->
+            <!--                    android:calendarViewShown="false"-->
+            <!--                    android:datePickerMode="spinner"-->
+            <!--                    android:scaleX=".7"-->
+            <!--                    android:scaleY=".7" />-->
 
-<!--                <TimePicker-->
-<!--                    android:id="@+id/time_picker"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center"-->
-<!--                    android:layout_marginHorizontal="-30dp"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:calendarViewShown="false"-->
-<!--                    android:scaleX=".7"-->
-<!--                    android:scaleY=".7"-->
-<!--                    android:timePickerMode="spinner" />-->
-<!--            </LinearLayout>-->
+            <!--                <TimePicker-->
+            <!--                    android:id="@+id/time_picker"-->
+            <!--                    android:layout_width="0dp"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_gravity="center"-->
+            <!--                    android:layout_marginHorizontal="-30dp"-->
+            <!--                    android:layout_weight="1"-->
+            <!--                    android:calendarViewShown="false"-->
+            <!--                    android:scaleX=".7"-->
+            <!--                    android:scaleY=".7"-->
+            <!--                    android:timePickerMode="spinner" />-->
+            <!--            </LinearLayout>-->
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

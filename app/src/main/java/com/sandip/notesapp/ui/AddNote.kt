@@ -1,8 +1,9 @@
 package com.sandip.notesapp.ui
 
-import android.app.*
+import android.app.Dialog
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
@@ -368,9 +369,9 @@ class AddNote : AppCompatActivity() {
             val time = intent.getStringExtra("time")
             val place = intent.getStringExtra("location")
             val clr = intent.getIntExtra("clr", 0)
+//            val byteArray = intent.getByteArrayExtra("image")
+//            val bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray!!.size)
 
-
-//            val image = intent.getStringExtra("image")
             noteID = intent.getIntExtra("noteId", -1)
 
 
@@ -379,6 +380,7 @@ class AddNote : AppCompatActivity() {
             binding.checkbox.visibility = View.VISIBLE
             binding.reminder.visibility = View.VISIBLE
             binding.location.visibility = View.VISIBLE
+            binding.setImage.visibility = View.VISIBLE
 
 
 
@@ -392,7 +394,8 @@ class AddNote : AppCompatActivity() {
             binding.date.setText(date)
             binding.time.setText(time)
             binding.placeInput.setText(place)
-            binding.addNote.setBackgroundColor(clr)//            binding.setImage.setText(noteTitle)
+            binding.addNote.setBackgroundColor(clr)
+//          binding.setImage.setImageBitmap(bmp)
 
         }
         binding.addNote2.setOnClickListener {

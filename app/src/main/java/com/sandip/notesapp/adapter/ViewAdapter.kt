@@ -3,6 +3,7 @@ package com.sandip.notesapp.adapter
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,6 +68,13 @@ class ViewAdapter(
         holder.itemView.setOnClickListener {
             noteClickInterface.onNoteClick(allNotes[position])
         }
+        holder.itemView.setOnLongClickListener {
+
+
+
+          true
+
+        }
     }
 
     override fun getItemCount(): Int {
@@ -94,4 +102,6 @@ class ViewAdapter(
     interface NoteClickInterface {
         fun onNoteClick(entityPerson: NoteEntity)
     }
+
+
 }

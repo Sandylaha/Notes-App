@@ -1,4 +1,4 @@
-package com.sandip.notesapp.ui
+package com.sandip.notesapp.adapter
 
 import android.app.PendingIntent
 import android.content.BroadcastReceiver

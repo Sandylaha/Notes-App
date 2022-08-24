@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.sandip.notesapp">
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 
     <application
         android:allowBackup="true"
@@ -15,17 +16,18 @@
         android:theme="@style/Theme.NotesApp"
         tools:targetApi="32">
         <activity
-            android:name=".ui.AddNote"
-            android:exported="false" />
+            android:name=".adapter.ScreenLock"
+            android:exported="false">
+
+        </activity>
         <activity
-            android:name=".ui.Note"
+            android:name=".ui.AddNote"
             android:exported="false" />
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

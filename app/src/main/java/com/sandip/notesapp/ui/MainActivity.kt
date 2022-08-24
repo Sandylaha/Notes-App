@@ -15,8 +15,6 @@ import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.sandip.notesapp.R
 import com.sandip.notesapp.adapter.ViewAdapter
@@ -24,36 +22,28 @@ import com.sandip.notesapp.databinding.ActivityMainBinding
 import com.sandip.notesapp.model.NoteEntity
 import com.sandip.notesapp.viewmodel.NoteViewModel
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity(), ViewAdapter.NoteClickInterface, ViewAdapter.NoteClickDeleteInterface {
 
+    //Declaration of View Binding, ViewModel and Adapter instances
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModal: NoteViewModel
-    var arrNotes = ArrayList<NoteEntity>()
-    private val noteRVAdapter = ViewAdapter(this, this)
-
-
+    private lateinit var noteRVAdapter : ViewAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.appBarMain.userPhoto.setOnClickListener {
-//            Snack.make(view, "Replace with your own action", Snack.LENGTH_LONG).setAction("Action", null).show()
-            val drawerLayout: DrawerLayout = binding.drawerLayout
-            drawerLayout.openDrawer(Gravity.LEFT)
-        }
-
+        //Dialog Popup for Sort by Button
         val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.bottom_popup)
-        binding.appBarMain.sortBy.setOnClickListener {
 
+        //OnClickListener to Open Sort by Dialog Popup
+        binding.appBarMain.toolbar.sortBy.setOnClickListener {
             dialog.show()
             dialog.window?.setLayout(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -64,6 +54,13 @@ class MainActivity : AppCompatActivity(), ViewAdapter.NoteClickInterface, ViewAd
             dialog.window?.setGravity(Gravity.BOTTOM)
         }
 
+        //OnClickListener to Open Navigation Drawer
+        binding.appBarMain.toolbar.userPhoto.setOnClickListener {
+            val drawerLayout: DrawerLayout = binding.drawerLayout
+            drawerLayout.openDrawer(Gravity.LEFT)
+        }
+
+        //OnClickListener to Add a New Note
         binding.appBarMain.addNote2.setOnClickListener {
             startActivity(Intent(applicationContext, AddNote::class.java))
         }
@@ -123,7 +120,7 @@ class MainActivity : AppCompatActivity(), ViewAdapter.NoteClickInterface, ViewAd
         notesRV.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
 
-
+        noteRVAdapter = ViewAdapter(this, this)
         notesRV.adapter = noteRVAdapter
 
         viewModal = ViewModelProvider(
@@ -140,14 +137,8 @@ class MainActivity : AppCompatActivity(), ViewAdapter.NoteClickInterface, ViewAd
             }
         }
 
-//        viewModal.allData.observe(this) { list ->
-//            list?.let {
-//                noteRVAdapter.setData(it)
-//            }
-//        }
 
-
-        binding.appBarMain.searchView2.setOnQueryTextListener(object :
+        binding.appBarMain.toolbar.searchView2.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
@@ -171,6 +162,7 @@ class MainActivity : AppCompatActivity(), ViewAdapter.NoteClickInterface, ViewAd
         })
     }
 
+
     override fun onDeleteIconClick(entityPerson: NoteEntity) {
         TODO("Not yet implemented")
     }
@@ -186,22 +178,24 @@ class MainActivity : AppCompatActivity(), ViewAdapter.NoteClickInterface, ViewAd
         intent.putExtra("time", entityPerson.time)
         intent.putExtra("location", entityPerson.location)
         intent.putExtra("clr", entityPerson.clr)
-        intent.putExtra("image", entityPerson.image)
+//        val stream = ByteArrayOutputStream()
+//        entityPerson.image?.compress(Bitmap.CompressFormat.PNG, 100, stream)
+//        val byteArray: ByteArray = stream.toByteArray()
+//        intent.putExtra("image", byteArray)
         intent.putExtra("noteId", entityPerson.id)
         startActivity(intent)    }
 
     private fun getItemsFromDb(p0: String) {
         var searchText = "%$p0%"
-        Log.d("value",searchText)
+        Log.d("value", searchText)
 
         viewModal.searchDatabase(searchText).observe(this@MainActivity) { list ->
             list?.let {
                 noteRVAdapter.setData(it)
-                Log.d("res",it.toString())
+                Log.d("res", it.toString())
 
             }
 
         }
-
     }
 }
