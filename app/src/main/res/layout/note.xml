@@ -2,39 +2,45 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/clr"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardElevation="2dp"
-        android:layout_margin = "5dp"
-        app:cardCornerRadius="00dp"
-        >
+        android:layout_margin = "5dp">
 
-        <RelativeLayout
-            android:background="?android:attr/selectableItemBackground"
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <LinearLayout
+                android:id="@+id/imgFrame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone"
+               >
             <ImageView
                 android:id="@+id/img22"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:scaleType="fitXY" />
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="155dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
             <TextView
                 android:id="@+id/titlecard"
+                android:text="dddffdsfdfdfdfdfdfdf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="fdsfdsfdsffdsf"
                 android:textSize="17sp"
                 android:textStyle="bold" />
                 <TextView
@@ -42,15 +48,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="13sp"
-                    android:text="fdsfdsfdsffdsf"
                     android:layout_marginTop="5dp"
-                    />
+                    android:visibility="gone"/>
             <LinearLayout
                 android:id="@+id/tick"
                 android:layout_width="125dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 >
                 <CheckBox
                     android:id="@+id/checkbox_meat"
@@ -63,25 +69,25 @@
                     android:textSize="13sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="fdsfdsfdsffdsf"
                     android:layout_marginLeft="5dp"/>
             </LinearLayout>
                 <TextView
                     android:id="@+id/urlLink"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="fdsfdsfdsffdsf"
                     android:textColor="@color/blue"
                     android:layout_marginTop="10dp"
                     android:textSize="13sp"
+                    android:visibility="gone"
                     />
                 <LinearLayout
-                    android:id="@+id/reminder"
+                    android:id="@+id/reminder1"
                     android:layout_width="125dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/search_view"
                     android:orientation="horizontal"
+                    android:visibility="gone"
                  >
 
                     <ImageView
@@ -113,12 +119,13 @@
                         android:theme="@style/SearchView" />
                 </LinearLayout>
                 <LinearLayout
-                    android:id="@+id/location"
+                    android:id="@+id/location1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/search_view"
                     android:orientation="horizontal"
+                    android:visibility="gone"
                     >
 
                     <ImageView
@@ -138,16 +145,7 @@
                         android:textSize="10dp"
                         android:theme="@style/SearchView" />
                 </LinearLayout>
-
-
-
             </LinearLayout>
-
-
-
-
-        </RelativeLayout>
-
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
-
 </FrameLayout>

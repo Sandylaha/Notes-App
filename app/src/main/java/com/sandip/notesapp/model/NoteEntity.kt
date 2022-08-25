@@ -15,7 +15,7 @@ class NoteEntity(
     @ColumnInfo(name = "Time") val time: String? = null,
     @ColumnInfo(name = "Location") val location: String? = null,
     @ColumnInfo(name = "Color") val clr: Int = 0,
-    @ColumnInfo(name="image", typeAffinity = ColumnInfo.BLOB) val image: Bitmap? = null,
+    @ColumnInfo(name="image", typeAffinity = ColumnInfo.BLOB) val image: Bitmap?,
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
 

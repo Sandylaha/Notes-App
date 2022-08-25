@@ -3,7 +3,6 @@ package com.sandip.notesapp.ui
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
@@ -21,11 +20,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.sandip.notesapp.R
+import com.sandip.notesapp.adapter.ViewAdapter
 import com.sandip.notesapp.databinding.ActivityAddNoteBinding
 import com.sandip.notesapp.model.NoteEntity
 import kotlinx.coroutines.launch
@@ -36,12 +37,17 @@ import kotlinx.coroutines.launch
 //const val CHANNEL_DESCRIPTION = "Notification Message"
 
 @Suppress("DEPRECATION")
-class AddNote : AppCompatActivity() {
+class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface{
 
 
     private lateinit var binding: ActivityAddNoteBinding
     private val REQUEST_IMAGE_CAPTURE = 1
     private val SELECT_PICTURE = 2
+    companion object {
+        private var allNotes = ArrayList<NoteEntity>()
+        private var all = ArrayList<NoteEntity>()
+
+    }
     //    private val AUTOCOMPLETE_REQUEST_CODE = 3
 
 
@@ -360,44 +366,35 @@ class AddNote : AppCompatActivity() {
 
 
         val noteType = intent.getStringExtra("noteType")
+
         if (noteType.equals("Edit")) {
+            println("Inside add note")
             val noteTitle = intent.getStringExtra("noteTitle")
-            val noteDescription = intent.getStringExtra("noteDescription")
-            val tickDesc = intent.getStringExtra("tickDesc")
-            val url = intent.getStringExtra("url")
-            val date = intent.getStringExtra("date")
-            val time = intent.getStringExtra("time")
-            val place = intent.getStringExtra("location")
-            val clr = intent.getIntExtra("clr", 0)
+//            val noteDescription = intent.getStringExtra("noteDescription")
+//            val tickDesc = intent.getStringExtra("tickDesc")
+//            val url = intent.getStringExtra("url")
+//            val date = intent.getStringExtra("date")
+//            val time = intent.getStringExtra("time")
+//            val place = intent.getStringExtra("location")
+//            val clr = intent.getIntExtra("clr", 0)
 //            val byteArray = intent.getByteArrayExtra("image")
-//            val bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray!!.size)
-
+//
+//            val converters = Converters()
+//            val bitmap = byteArray?.let { converters.toBitmap(it) }
             noteID = intent.getIntExtra("noteId", -1)
-
-
-//            saveBtn.text = "Update Details"
-            binding.urlLayout.visibility = View.VISIBLE
-            binding.checkbox.visibility = View.VISIBLE
-            binding.reminder.visibility = View.VISIBLE
-            binding.location.visibility = View.VISIBLE
-            binding.setImage.visibility = View.VISIBLE
+            println(noteID)
 
 
 
+            fetchData()
 
 
-
-            binding.titleMain.setText(noteTitle)
-            binding.body.setText(noteDescription)
-            binding.tickDesc.setText(tickDesc)
-            binding.urlLink.setText(url)
-            binding.date.setText(date)
-            binding.time.setText(time)
-            binding.placeInput.setText(place)
-            binding.addNote.setBackgroundColor(clr)
-//          binding.setImage.setImageBitmap(bmp)
-
+//
+//
+//
+//                Glide.with(applicationContext).load(bitmap).into(binding.setImage);
         }
+
         binding.addNote2.setOnClickListener {
             val title = binding.titleMain.text?.toString()
             if((title!=null)
@@ -413,6 +410,34 @@ class AddNote : AppCompatActivity() {
 
 
         }
+
+
+
+        binding.deleteIt2.setOnClickListener {
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage("Are you sure want to Delete?")
+                .setCancelable(false)
+                .setPositiveButton("Yes") { _, _ ->
+
+                    noteViewModel.deleteById(noteID)
+                    Toast.makeText(this, "Note Deleted", Toast.LENGTH_LONG).show()
+                    finish()
+                }
+                .setNegativeButton("No") { dialog, _ ->
+                    dialog.dismiss()
+                }
+            val alert = builder.create()
+            alert.show()
+        }
+
+
+
+
+
+
+
+
+
 
 
         binding.location.setOnClickListener {
@@ -708,13 +733,75 @@ class AddNote : AppCompatActivity() {
             thistle.setImageResource(0)
             binding.addNote.setBackgroundColor(Color.parseColor("#EFC9FE"))
         }
+
+}
+
+    private fun fetchData() {
+
+        lifecycleScope.launch {
+            allNotes = noteViewModel.getDataById(noteID) as ArrayList<NoteEntity>
+
+            with(allNotes) {
+                dfgdg()
+            }
+        }
     }
 
-    private fun addtoDB(noteType: String?) {
+    private fun dfgdg() {
 
-//        else {
-//            saveBtn.text = "Save Details"
-//        }
+        runOnUiThread {
+            val noteTitle = allNotes[0].title
+            val noteDescription = allNotes[0].body
+            val tickDesc = allNotes[0].tickDesc
+            val url = allNotes[0].url
+            val date = allNotes[0].date
+            val time = allNotes[0].time
+            val place = allNotes[0].location
+            val clr = allNotes[0].clr
+            val bitmap = allNotes[0].image
+            binding.titleMain.setText(noteTitle)
+
+            if (!(noteDescription.isNullOrEmpty())) {
+                binding.body.setText(noteDescription)
+            }
+
+            if (!(tickDesc.isNullOrEmpty())) {
+                binding.tickDesc.setText(tickDesc)
+                binding.checkbox.visibility = View.VISIBLE
+            }
+
+            if (!(url.isNullOrEmpty())) {
+                binding.urlLink.setText(url)
+                binding.urlLayout.visibility = View.VISIBLE
+            }
+
+            if (!(date.isNullOrEmpty() && time.isNullOrEmpty())) {
+                binding.date.setText(date)
+                binding.time.setText(time)
+                binding.reminder.visibility = View.VISIBLE
+            }
+
+
+            if (!(place.isNullOrEmpty())) {
+                binding.placeInput.setText(place)
+                binding.location.visibility = View.VISIBLE
+            }
+
+            binding.addNote.setBackgroundColor(clr)
+
+
+
+
+
+            binding.setImage.visibility = View.VISIBLE
+            binding.setImage.setImageBitmap(bitmap)
+
+        }
+
+    }
+
+
+    private fun addtoDB(noteType: String?) {
 
         val title = binding.titleMain.text?.toString()
         val body = binding.body.text?.toString()
@@ -730,21 +817,15 @@ class AddNote : AppCompatActivity() {
         val viewColor = lay.background as ColorDrawable
         val colorId = viewColor.color
 
-//        val clr = binding.addNote.background?.toString()
+        val bitmap: Bitmap? = (img as? BitmapDrawable)?.bitmap
+        val height = bitmap?.height
+        val width = bitmap?.width
+        val bit = bitmap?.let { Bitmap.createScaledBitmap(it, width!!,height!!,false) }
 
-
-        val bitmap : Bitmap
-        if(img == null){
-            val conf = Bitmap.Config.ARGB_8888
-            bitmap = Bitmap.createBitmap(1, 1, conf)
-        }
-        else{
-            bitmap = (img as BitmapDrawable).bitmap
-        }
 
         if (noteType.equals("Edit")){
             lifecycleScope.launch {
-                val updatedNote = NoteEntity(title,body,tickDesc,url,date,time,location,colorId, bitmap)//, noteDescription)
+                val updatedNote = NoteEntity(title,body,tickDesc,url,date,time,location,colorId, bit)//, noteDescription)
 
                 updatedNote.id = noteID
                 noteViewModel.updateNote(updatedNote)
@@ -761,7 +842,7 @@ class AddNote : AppCompatActivity() {
                 noteViewModel.addNote(
                     NoteEntity(
                         title, body, tickDesc, url, date, time, location, colorId,
-                        bitmap
+                        bit
                     )
                 )//, noteDescription))
                 Toast.makeText(applicationContext, "$title Added", Toast.LENGTH_LONG)
@@ -851,12 +932,16 @@ class AddNote : AppCompatActivity() {
         if ((requestCode == REQUEST_IMAGE_CAPTURE) && (resultCode == RESULT_OK)) {
 
             val imageBitmap = data?.extras?.get("data") as Bitmap
-//            Bitmap.createScaledBitmap(imageBitmap, 50,50,true)
-            binding.setImage.setImageBitmap(imageBitmap)
+//            Bitmap.createScaledBitmap(imageBitmap, 120,120,false)
+            Glide.with(this).load(imageBitmap).into(binding.setImage);
+
+//            binding.setImage.setImageBitmap(imageBitmap)
         } else if (requestCode == SELECT_PICTURE && resultCode == RESULT_OK) {
             val selectedImageUri: Uri? = data?.data
             if (null != selectedImageUri) {
-                binding.setImage.setImageURI(selectedImageUri)
+                Glide.with(this).load(selectedImageUri).into(binding.setImage);
+
+//                binding.setImage.setImageURI(selectedImageUri)
             }
         }
         else {
@@ -865,6 +950,21 @@ class AddNote : AppCompatActivity() {
 
 
     }
+
+    override fun onDeleteIconClick(entityPerson: NoteEntity) {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage("Are you sure want to Delete?")
+            .setCancelable(false)
+            .setPositiveButton("Yes") { _, _ ->
+
+                noteViewModel.deleteNote(entityPerson)
+                Toast.makeText(this, "${entityPerson.title} Deleted", Toast.LENGTH_LONG).show()
+            }
+            .setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+        val alert = builder.create()
+        alert.show()    }
 
 
     //    private fun createNotificationChannel() {
@@ -956,4 +1056,5 @@ class AddNote : AppCompatActivity() {
 //        calendar.set(year, month, day, hour, minute)
 //        return calendar.timeInMillis
 //    }
+
 }

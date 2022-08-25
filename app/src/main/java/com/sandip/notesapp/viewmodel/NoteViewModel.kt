@@ -25,6 +25,13 @@ class NoteViewModel(application: Application) : AndroidViewModel(application){
         repository.delete(entityPerson)
     }
 
+    fun deleteById (iD: Int) = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteById(iD)
+    }
+
+
+
+
     fun updateNote(entityPerson: NoteEntity) = viewModelScope.launch(Dispatchers.IO) {
         repository.update(entityPerson)
     }
@@ -36,6 +43,10 @@ class NoteViewModel(application: Application) : AndroidViewModel(application){
 
     fun searchDatabase(desc: String) : LiveData<List<NoteEntity>>    {
         return repository.searchDatabase(desc)
+    }
+
+    suspend fun getDataById(reqId: Int) : List<NoteEntity>   {
+        return repository.getDataById(reqId)
     }
 }
 

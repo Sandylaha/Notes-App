@@ -23,4 +23,12 @@ class Repository(private val noteDao: NoteDao ) {
     fun searchDatabase(desc : String) : LiveData<List<NoteEntity>>{
         return noteDao.searchDatabase(desc)
     }
+
+   suspend fun getDataById(reqId: Int): List<NoteEntity>{
+       return noteDao.getDataById(reqId)
+    }
+
+    suspend fun deleteById(iD: Int){
+        noteDao.deleteById(iD)
+    }
 }

@@ -2,6 +2,7 @@ package com.sandip.notesapp.ui
 
 import android.app.Dialog
 import android.content.Intent
+import android.database.CursorWindow
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -12,15 +13,19 @@ import android.view.Window
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SearchView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.sandip.notesapp.R
+import com.sandip.notesapp.adapter.Converters
 import com.sandip.notesapp.adapter.ViewAdapter
 import com.sandip.notesapp.databinding.ActivityMainBinding
 import com.sandip.notesapp.model.NoteEntity
 import com.sandip.notesapp.viewmodel.NoteViewModel
+import java.lang.reflect.Field
 import java.util.*
 
 
@@ -164,26 +169,47 @@ class MainActivity : AppCompatActivity(), ViewAdapter.NoteClickInterface, ViewAd
 
 
     override fun onDeleteIconClick(entityPerson: NoteEntity) {
-        TODO("Not yet implemented")
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage("Are you sure want to Delete?")
+            .setCancelable(false)
+            .setPositiveButton("Yes") { _, _ ->
+
+                viewModal.deleteNote(entityPerson)
+                Toast.makeText(this, "Note Deleted", Toast.LENGTH_LONG).show()
+            }
+            .setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+        val alert = builder.create()
+        alert.show()
     }
 
     override fun onNoteClick(entityPerson: NoteEntity) {
-        val intent = Intent(this@MainActivity, AddNote::class.java)
-        intent.putExtra("noteType", "Edit")
-        intent.putExtra("noteTitle", entityPerson.title)
-        intent.putExtra("noteDescription", entityPerson.body)
-        intent.putExtra("tickDesc", entityPerson.tickDesc)
-        intent.putExtra("url", entityPerson.url)
-        intent.putExtra("date", entityPerson.date)
-        intent.putExtra("time", entityPerson.time)
-        intent.putExtra("location", entityPerson.location)
-        intent.putExtra("clr", entityPerson.clr)
-//        val stream = ByteArrayOutputStream()
-//        entityPerson.image?.compress(Bitmap.CompressFormat.PNG, 100, stream)
-//        val byteArray: ByteArray = stream.toByteArray()
-//        intent.putExtra("image", byteArray)
-        intent.putExtra("noteId", entityPerson.id)
-        startActivity(intent)    }
+        val converters = Converters()
+        val byteArray = entityPerson.image?.let { converters.fromBitmap(it) }
+        println("Bytearray size ${byteArray?.size}")
+//        GlobalScope.launch {
+            val intent = Intent(this@MainActivity, AddNote::class.java)
+            intent.putExtra("noteType", "Edit")
+            intent.putExtra("noteTitle", entityPerson.title)
+//            intent.putExtra("noteDescription", entityPerson.body)
+//            intent.putExtra("tickDesc", entityPerson.tickDesc)
+//            intent.putExtra("url", entityPerson.url)
+//            intent.putExtra("date", entityPerson.date)
+//            intent.putExtra("time", entityPerson.time)
+//            intent.putExtra("location", entityPerson.location)
+//            intent.putExtra("clr", entityPerson.clr)
+//
+//
+//            intent.putExtra("image", byteArray)
+            intent.putExtra("noteId", entityPerson.id)
+            try {
+                startActivity(intent)
+            } catch (e: Exception) {
+                println(e.toString())
+            }
+        }
+//    }
 
     private fun getItemsFromDb(p0: String) {
         var searchText = "%$p0%"
