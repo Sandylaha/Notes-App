@@ -1,20 +1,12 @@
 package com.sandip.notesapp.adapter
 
-import android.graphics.Bitmap
-import android.graphics.Color
-import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.sandip.notesapp.R
 import com.sandip.notesapp.model.NoteEntity
-import com.squareup.picasso.Picasso
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -25,10 +17,10 @@ class ViewAdapter(
     RecyclerView.Adapter<ViewAdapter.ViewHolder>() {
 
     private var allNotes = ArrayList<NoteEntity>()
+
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val title: TextView = itemView.findViewById(R.id.titlecard)
         val body: TextView = itemView.findViewById(R.id.body)
-        val tickDesc: TextView = itemView.findViewById(R.id.tick_Desc)
         val url: TextView = itemView.findViewById(R.id.urlLink)
         var date: TextView = itemView.findViewById(R.id.date)
         val time: TextView = itemView.findViewById(R.id.time)
@@ -37,12 +29,12 @@ class ViewAdapter(
         var image: ImageView = itemView.findViewById(R.id.img22)
 
         val imgFrame : LinearLayout = itemView.findViewById(R.id.imgFrame)
-        val tick : LinearLayout = itemView.findViewById(R.id.tick)
         val reminder : LinearLayout = itemView.findViewById(R.id.reminder1)
         val location : LinearLayout = itemView.findViewById(R.id.location1)
 
-
-
+        val tick : LinearLayout = itemView.findViewById(R.id.tick)
+        val checkBox : CheckBox = itemView.findViewById(R.id.checkbox_meat)
+        val tickDesc: TextView = itemView.findViewById(R.id.tick_Desc)
 
 
     }
@@ -63,7 +55,16 @@ class ViewAdapter(
             holder.body.visibility = View.VISIBLE
         }
         if(!(allNotes[position].tickDesc.isNullOrEmpty())) {
+            allNotes[position].checkBox.also {
+                if (it != null) {
+                    holder.checkBox.isChecked = it
+                }
+            }
+
             holder.tickDesc.text = allNotes[position].tickDesc
+            if(allNotes[position].checkBox == true){
+                holder.tickDesc.paint.isStrikeThruText = true
+            }
             holder.tick.visibility = View.VISIBLE
         }
         if(!(allNotes[position].url.isNullOrEmpty())) {
@@ -123,7 +124,6 @@ class ViewAdapter(
     fun setData(arrNotesList: List<NoteEntity>) {
         allNotes = arrNotesList as ArrayList<NoteEntity>
         notifyDataSetChanged()
-
     }
 
 
@@ -133,12 +133,13 @@ class ViewAdapter(
         notifyDataSetChanged()
     }
 
+
     interface NoteClickDeleteInterface {
         fun onDeleteIconClick(entityPerson: NoteEntity)
     }
 
     interface NoteClickInterface {
-        fun onNoteClick(entityPerson: NoteEntity)
+        fun onNoteClick(entityPerson: NoteEntity,)
     }
 
 

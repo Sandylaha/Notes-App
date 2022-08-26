@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
+import android.view.Menu
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageView
@@ -41,13 +42,13 @@ class MainActivity : AppCompatActivity(), ViewAdapter.NoteClickInterface, ViewAd
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        supportActionBar?.hide()
         //Dialog Popup for Sort by Button
         val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.bottom_popup)
 
-        //OnClickListener to Open Sort by Dialog Popup
+//        OnClickListener to Open Sort by Dialog Popup
         binding.appBarMain.toolbar.sortBy.setOnClickListener {
             dialog.show()
             dialog.window?.setLayout(
@@ -60,7 +61,7 @@ class MainActivity : AppCompatActivity(), ViewAdapter.NoteClickInterface, ViewAd
         }
 
         //OnClickListener to Open Navigation Drawer
-        binding.appBarMain.toolbar.userPhoto.setOnClickListener {
+        binding.appBarMain.toolbar.profileImage.setOnClickListener {
             val drawerLayout: DrawerLayout = binding.drawerLayout
             drawerLayout.openDrawer(Gravity.LEFT)
         }

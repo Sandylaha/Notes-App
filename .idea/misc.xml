@@ -24,6 +24,7 @@
         <entry key="app/src/main/res/drawable-v24/default.xml" value="0.1735" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.184" />
         <entry key="app/src/main/res/drawable-v24/notes_color_blue.xml" value="0.2695" />
+        <entry key="app/src/main/res/drawable-v24/rounded_bottom_appbar.xml" value="0.179" />
         <entry key="app/src/main/res/drawable/add_note.xml" value="0.123" />
         <entry key="app/src/main/res/drawable/color_lightsteelblue.xml" value="0.1915" />
         <entry key="app/src/main/res/drawable/color_orange.xml" value="0.2695" />
@@ -35,13 +36,14 @@
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.184" />
         <entry key="app/src/main/res/drawable/popup_background.xml" value="0.193" />
         <entry key="app/src/main/res/drawable/search_view.xml" value="0.199" />
+        <entry key="app/src/main/res/drawable/square.xml" value="0.168" />
         <entry key="app/src/main/res/layout/activity_add_note.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_note.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_screen_lock.xml" value="0.18" />
         <entry key="app/src/main/res/layout/add_popup.xml" value="0.33" />
         <entry key="app/src/main/res/layout/add_tick.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.29615384615384616" />
         <entry key="app/src/main/res/layout/app_main.xml" value="0.27136752136752135" />
         <entry key="app/src/main/res/layout/bottom_dialog.xml" value="0.15085470085470085" />
         <entry key="app/src/main/res/layout/bottom_popup.xml" value="0.33" />
@@ -65,15 +67,18 @@
         <entry key="app/src/main/res/layout/login.xml" value="0.29240506329113924" />
         <entry key="app/src/main/res/layout/more_popup.xml" value="0.25" />
         <entry key="app/src/main/res/layout/nav_header.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/note.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/note.xml" value="0.37774524158125916" />
         <entry key="app/src/main/res/layout/notification.xml" value="0.1" />
         <entry key="app/src/main/res/layout/page.xml" value="0.2824786324786325" />
         <entry key="app/src/main/res/layout/place.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/tick.xml" value="0.2952991452991453" />
+        <entry key="app/src/main/res/layout/tickbox.xml" value="0.2952991452991453" />
         <entry key="app/src/main/res/layout/toggle.xml" value="0.5" />
-        <entry key="app/src/main/res/layout/toolbar.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/toolbar.xml" value="0.33" />
         <entry key="app/src/main/res/layout/url.xml" value="0.1" />
         <entry key="app/src/main/res/layout/url_popup.xml" value="0.5" />
         <entry key="app/src/main/res/menu/filter_options.xml" value="0.2952991452991453" />
+        <entry key="app/src/main/res/menu/main.xml" value="0.22" />
         <entry key="app/src/main/res/menu/navigation_drawer.xml" value="0.5" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.184" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.215" />

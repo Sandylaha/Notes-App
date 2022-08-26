@@ -34,4 +34,6 @@ interface NoteDao {
 
     @Query("Select * from Note where Title like  :desc")
     fun searchDatabase(desc : String) : LiveData<List<NoteEntity>>
+
+
 }

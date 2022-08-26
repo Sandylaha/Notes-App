@@ -13,11 +13,12 @@ import kotlinx.coroutines.launch
 class NoteViewModel(application: Application) : AndroidViewModel(application){
 
     val allData: LiveData<List<NoteEntity>>
+
     private val repository : Repository
 
     init {
-        val dao = NoteDatabase.getDataBase(application).getData()
-        repository = Repository(dao)
+        val noteDao = NoteDatabase.getDataBase(application).getData()
+        repository = Repository(noteDao)
         allData = repository.allData
     }
 

@@ -18,6 +18,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -67,19 +68,31 @@ class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface{
 
 
         binding.share.setOnClickListener {
+            val title = binding.titleMain.text?.toString()
+            val body = binding.body.text?.toString()
 
+            val url = binding.urlLink.text?.toString()
+            val date = binding.date.text?.toString()
+            val time = binding.time.text?.toString()
+
+            val location = binding.placeInput.text?.toString()
+            val img = binding.setImage.drawable
             try {
+                val bitmap:Bitmap = img.toBitmap()
+                val path: String =
+                    MediaStore.Images.Media.insertImage(contentResolver, bitmap, "Title", null)
+                val imageUri = Uri.parse(path)
                 val i = Intent(Intent.ACTION_SEND)
-                i.type = "text/plan"
-//                i.putExtra(Intent.EXTRA_SUBJECT, mSource)
-//                val body = "$mTitle\n$mUrl\nShare from the News App\n"
-//                i.putExtra(Intent.EXTRA_TEXT, body)
+                i.type = "image/png"
+                i.putExtra(Intent.EXTRA_STREAM,imageUri)
+                i.putExtra(Intent.EXTRA_SUBJECT, title)
+                val body = "$body\n$url\n$date,$time\n$location\nShare from the Notefy App\n"
+                i.putExtra(Intent.EXTRA_TEXT, body)
                 startActivity(Intent.createChooser(i, "Share with :"))
             } catch (e: Exception) {
                 Toast.makeText(this, "Hmm.. Sorry, \nCannot be share", Toast.LENGTH_SHORT).show()
             }
         }
-
 
 
         val colorDialog = Dialog(this)
@@ -214,14 +227,12 @@ class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface{
         }
 
 
-
         val url: LinearLayout = addDialog.findViewById(R.id.add_url)
         url.setOnClickListener {
             addDialog.dismiss()
             showAlert("url")
 
         }
-
 
 
         //        val apiKey = getString(R.string.api_key)
@@ -260,9 +271,6 @@ class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface{
 //
 
 
-
-
-
         }
         val datePicker =
             MaterialDatePicker.Builder.datePicker()
@@ -287,16 +295,6 @@ class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface{
             addDialog.dismiss()
             datePicker.show(supportFragmentManager, "Date_Picker")
             timePicker.show(supportFragmentManager, "Time_Piker")
-
-
-
-
-
-
-
-
-
-
 
 
         }
@@ -397,16 +395,16 @@ class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface{
 
         binding.addNote2.setOnClickListener {
             val title = binding.titleMain.text?.toString()
-            if((title!=null)
-                && (title.isNotEmpty())){
+            if ((title != null)
+                && (title.isNotEmpty())
+            ) {
                 addtoDB(noteType)
+            } else {
+
+                Snackbar.make(it, "Title can not be empty", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+
             }
-            else{
-
-                Snackbar.make(it, "Title can not be empty", Snackbar.LENGTH_LONG).setAction("Action", null).show()
-
-            }
-
 
 
         }
@@ -441,7 +439,7 @@ class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface{
 
 
         binding.location.setOnClickListener {
-            val uri = "geo:0,0?q="+binding.placeInput.text
+            val uri = "geo:0,0?q=" + binding.placeInput.text
             val gmmIntentUri =
                 Uri.parse(uri)
             val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
@@ -733,9 +731,11 @@ class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface{
             thistle.setImageResource(0)
             binding.addNote.setBackgroundColor(Color.parseColor("#EFC9FE"))
         }
+        binding.checkboxMeat.setOnClickListener {
 
-}
-
+            binding.tickDesc.paint.isStrikeThruText = binding.checkboxMeat.isChecked
+        }
+    }
     private fun fetchData() {
 
         lifecycleScope.launch {
@@ -751,6 +751,7 @@ class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface{
 
         runOnUiThread {
             val noteTitle = allNotes[0].title
+            val checkMeat = allNotes[0].checkBox
             val noteDescription = allNotes[0].body
             val tickDesc = allNotes[0].tickDesc
             val url = allNotes[0].url
@@ -766,6 +767,8 @@ class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface{
             }
 
             if (!(tickDesc.isNullOrEmpty())) {
+                checkMeat?.let { binding.checkboxMeat.setChecked(it) }
+                binding.tickDesc.paint.isStrikeThruText = binding.checkboxMeat.isChecked
                 binding.tickDesc.setText(tickDesc)
                 binding.checkbox.visibility = View.VISIBLE
             }
@@ -805,6 +808,7 @@ class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface{
 
         val title = binding.titleMain.text?.toString()
         val body = binding.body.text?.toString()
+        val checkBox = binding.checkboxMeat.isChecked
         val tickDesc = binding.tickDesc?.text.toString()
         val url = binding.urlLink.text?.toString()
         val date = binding.date.text?.toString()
@@ -825,7 +829,7 @@ class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface{
 
         if (noteType.equals("Edit")){
             lifecycleScope.launch {
-                val updatedNote = NoteEntity(title,body,tickDesc,url,date,time,location,colorId, bit)//, noteDescription)
+                val updatedNote = NoteEntity(title,body,checkBox,tickDesc,url,date,time,location,colorId, bit)//, noteDescription)
 
                 updatedNote.id = noteID
                 noteViewModel.updateNote(updatedNote)
@@ -841,7 +845,7 @@ class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface{
             lifecycleScope.launch {
                 noteViewModel.addNote(
                     NoteEntity(
-                        title, body, tickDesc, url, date, time, location, colorId,
+                        title, body,checkBox, tickDesc, url, date, time, location, colorId,
                         bit
                     )
                 )//, noteDescription))
