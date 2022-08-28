@@ -88,7 +88,6 @@
                 android:theme="@style/SearchView" />
 
             <LinearLayout
-                android:id="@+id/checkbox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -101,7 +100,6 @@
                     android:layout_height="wrap_content" />
 
                 <EditText
-                    android:id="@+id/tick_Desc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

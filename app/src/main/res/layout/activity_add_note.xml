@@ -87,6 +87,15 @@
                 android:hint="Body"
                 android:textSize="20dp"
                 android:theme="@style/SearchView" />
+<!--            <LinearLayout-->
+<!--                android:id="@+id/more"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical"-->
+<!--                android:visibility="gone"/>-->
+
+
+<!--            </LinearLayout>-->
 
             <LinearLayout
                 android:id="@+id/checkbox"
@@ -94,7 +103,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="gone"
+                >
 
                 <CheckBox
                     android:id="@+id/checkbox_meat"
@@ -114,13 +124,7 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/more"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
 
-            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/add_more"
@@ -129,7 +133,8 @@
                 android:layout_margin="10dp"
                 android:layout_marginTop="30dp"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="gone"
+               >
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -142,7 +147,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
-                    android:text="Add more" />
+                    android:text="Add" />
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/url_layout"
@@ -271,9 +276,43 @@
 <!--                    android:scaleY=".7"-->
 <!--                    android:timePickerMode="spinner" />-->
 <!--            </LinearLayout>-->
+<!--            <androidx.constraintlayout..ConstraintLayout-->
+<!--                android:layout_width="365dp"-->
+<!--                android:layout_height="403dp"-->
+<!--                tools:layout_editor_absoluteX="16dp"-->
+<!--                tools:layout_editor_absoluteY="368dp">-->
+
+<!--                <ListView-->
+<!--                    android:id="@+id/listView"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:divider="@null"-->
+<!--                    android:dividerHeight="0dp" />-->
+
+<!--            </androidx.constraintlayout..ConstraintLayout>-->
+            <LinearLayout
+                android:id="@+id/td"
+                android:layout_width="45dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/search_view"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                >
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/ic_outline_checklist_24" />
+            </LinearLayout>
+
 
         </LinearLayout>
+
+
     </androidx.core.widget.NestedScrollView>
+
 
 
     <LinearLayout
@@ -281,8 +320,8 @@
         android:layout_width="match_parent"
         android:layout_height="47dp"
         android:layout_margin="10dp"
-        android:background="@drawable/search_view"
         android:padding="5dp"
+        android:background="@drawable/popup_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintHorizontal_bias="0.0"
@@ -314,6 +353,14 @@
             android:layout_marginBottom="5dp"
             android:src="@drawable/ic_baseline_image_24" />
 
+        <ImageView
+            android:id="@+id/todo"
+            android:layout_width="25dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginBottom="5dp"
+            android:src="@drawable/ic_baseline_fact_check_24" />
+
 
     </LinearLayout>
 
@@ -337,8 +384,8 @@
         android:id="@+id/add_note2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="28dp"
         android:elevation="10dp"
         android:src="@drawable/ic_baseline_done_24"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout"

@@ -8,7 +8,7 @@
     app:layout_behavior="@string/bottom_sheet_behavior">
     <LinearLayout
         android:id="@+id/layoutEdit"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp">
@@ -17,6 +17,11 @@
             android:layout_height="wrap_content"
             android:text="Color"
             android:textSize="16sp"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="#dddddd" />
     </LinearLayout>
     <HorizontalScrollView
         android:layout_width="match_parent"

@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.text.InputType
 import android.text.format.DateFormat.is24HourFormat
+import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.annotation.RequiresApi
@@ -27,6 +28,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.sandip.notesapp.R
+import com.sandip.notesapp.adapter.ListViewBAdapter
 import com.sandip.notesapp.adapter.ViewAdapter
 import com.sandip.notesapp.databinding.ActivityAddNoteBinding
 import com.sandip.notesapp.model.NoteEntity
@@ -38,23 +40,65 @@ import kotlinx.coroutines.launch
 //const val CHANNEL_DESCRIPTION = "Notification Message"
 
 @Suppress("DEPRECATION")
-class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface{
+class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface {
 
 
     private lateinit var binding: ActivityAddNoteBinding
     private val REQUEST_IMAGE_CAPTURE = 1
     private val SELECT_PICTURE = 2
-    companion object {
-        private var allNotes = ArrayList<NoteEntity>()
-        private var all = ArrayList<NoteEntity>()
+    val list = arrayListOf<String>()
 
-    }
     //    private val AUTOCOMPLETE_REQUEST_CODE = 3
-
 
 
     private lateinit var noteViewModel: com.sandip.notesapp.viewmodel.NoteViewModel
     private var noteID = -1
+
+
+    companion object {
+        private var allNotes = ArrayList<NoteEntity>()
+        private var all = ArrayList<NoteEntity>()
+        var count = 0
+
+        //         function to add an item given its name.
+        var items: ArrayList<String>? = null
+        var checks: ArrayList<Boolean>? = null
+
+        var listView: ListView? = null
+        var adapter: ListViewBAdapter? = null
+
+        fun addItem(chk: Boolean, item: String) {
+            if (item != null) {
+                checks?.add(chk)
+                items?.add(item)
+                println("Check box value:$chk")
+            }
+            listView?.setAdapter(adapter)
+            println(items)
+            Log.d("Items after add", items.toString()+ checks)
+
+        }
+
+        fun removeItem(i: Int) {
+
+//        items?.toString()?.let { Log.d("Items before delete", it) }
+//
+//            Log.d("Removed: " + items?.get(i))
+            items?.removeAt(i)
+            checks?.removeAt(i)
+            listView?.setAdapter(adapter)
+            Log.d("Items before delete", items.toString())
+
+        }
+        fun getPosition(i:Int){
+
+
+        }
+
+
+    }
+
+
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,16 +122,16 @@ class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface{
             val location = binding.placeInput.text?.toString()
             val img = binding.setImage.drawable
             try {
-                val bitmap:Bitmap = img.toBitmap()
+                val bitmap: Bitmap = img.toBitmap()
                 val path: String =
                     MediaStore.Images.Media.insertImage(contentResolver, bitmap, "Title", null)
                 val imageUri = Uri.parse(path)
                 val i = Intent(Intent.ACTION_SEND)
                 i.type = "image/png"
-                i.putExtra(Intent.EXTRA_STREAM,imageUri)
+                i.putExtra(Intent.EXTRA_STREAM, imageUri)
                 i.putExtra(Intent.EXTRA_SUBJECT, title)
-                val body = "$body\n$url\n$date,$time\n$location\nShare from the Notefy App\n"
-                i.putExtra(Intent.EXTRA_TEXT, body)
+                val body1 = "$body\n$url\n$date,$time\n$location\nShare from the Notefy App\n"
+                i.putExtra(Intent.EXTRA_TEXT, body1)
                 startActivity(Intent.createChooser(i, "Share with :"))
             } catch (e: Exception) {
                 Toast.makeText(this, "Hmm.. Sorry, \nCannot be share", Toast.LENGTH_SHORT).show()
@@ -106,6 +150,13 @@ class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface{
         val imageDialog = Dialog(this)
         imageDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         imageDialog.setContentView(R.layout.image_popup)
+
+        val todoDialog = Dialog(this)
+        todoDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        todoDialog.setContentView(R.layout.todo_listview)
+
+
+
 
         binding.add.setOnClickListener {
             addDialog.show()
@@ -217,16 +268,72 @@ class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface{
             binding.addMore.visibility = View.VISIBLE
         }
 
-        binding.addMore.setOnClickListener {
 
-            val linf = LayoutInflater.from(this)
+        //Todo Checklist
+        binding.todo.setOnClickListener {
+            openTodoPopup(todoDialog)
+        }
+        binding.td.setOnClickListener {
+            openTodoPopup(todoDialog)
+        }
 
-            val rr: LinearLayout = findViewById<View>(R.id.more) as LinearLayout
-            val v: View = linf.inflate(R.layout.add_tick, null)
-            rr.addView(v)
+        listView = todoDialog.findViewById(R.id.listview2)
+
+        items = java.util.ArrayList<String>()
+        checks = java.util.ArrayList<Boolean>()
+
+        val check:CheckBox = todoDialog.findViewById(R.id.todoCheck)
+        val editText:EditText = todoDialog.findViewById(R.id.todoDesc)
+
+
+        adapter = ListViewBAdapter(this, checks,items!!)
+        listView!!.adapter = adapter
+
+        val td: ImageView = todoDialog.findViewById(R.id.addTodo)
+        val btn: Button = todoDialog.findViewById(R.id.done)
+        td.setOnClickListener {
+            val txt = editText!!.text.toString()
+            val c = check.isChecked
+            println("Check box value:$c")
+//            if (txt != null && ) {
+//                Toast.makeText(this, "Enter an item.", Toast.LENGTH_LONG).show()
+//            } else {
+            addItem(c,txt)
+            editText!!.setText("")
+            check.isChecked = false
+            Toast.makeText(this, "Added $txt", Toast.LENGTH_LONG).show()
+            btn.visibility=View.VISIBLE
+        }
+//Todo Checklist
+
+
+        btn.setOnClickListener {
+            if(!(items.isNullOrEmpty())){
+                binding.td.visibility = View.VISIBLE
+            }
+            else{
+                binding.td.visibility = View.GONE
+            }
+
+            todoDialog.dismiss()
         }
 
 
+
+
+
+//        listView?.setOnItemLongClickListener(AdapterView.OnItemLongClickListener { adapterView, view, i, l ->
+//            removeItem(i)
+//            false
+//
+////            val linf = LayoutInflater.from(this)
+////
+////            val rr: LinearLayout = findViewById<View>(R.id.more) as LinearLayout
+////            val v: View = linf.inflate(R.layout.add_tick, null)
+////            rr.addView(v)
+//
+//
+//    })
         val url: LinearLayout = addDialog.findViewById(R.id.add_url)
         url.setOnClickListener {
             addDialog.dismiss()
@@ -751,9 +858,9 @@ class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface{
 
         runOnUiThread {
             val noteTitle = allNotes[0].title
-            val checkMeat = allNotes[0].checkBox
+//            val checkMeat = allNotes[0].checkBox
             val noteDescription = allNotes[0].body
-            val tickDesc = allNotes[0].tickDesc
+//            val tickDesc = allNotes[0].tickDesc
             val url = allNotes[0].url
             val date = allNotes[0].date
             val time = allNotes[0].time
@@ -766,12 +873,12 @@ class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface{
                 binding.body.setText(noteDescription)
             }
 
-            if (!(tickDesc.isNullOrEmpty())) {
-                checkMeat?.let { binding.checkboxMeat.setChecked(it) }
-                binding.tickDesc.paint.isStrikeThruText = binding.checkboxMeat.isChecked
-                binding.tickDesc.setText(tickDesc)
-                binding.checkbox.visibility = View.VISIBLE
-            }
+//            if (!(tickDesc.isNullOrEmpty())) {
+//                checkMeat?.let { binding.checkboxMeat.setChecked(it) }
+//                binding.tickDesc.paint.isStrikeThruText = binding.checkboxMeat.isChecked
+//                binding.tickDesc.setText(tickDesc)
+//                binding.checkbox.visibility = View.VISIBLE
+//            }
 
             if (!(url.isNullOrEmpty())) {
                 binding.urlLink.setText(url)
@@ -808,8 +915,8 @@ class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface{
 
         val title = binding.titleMain.text?.toString()
         val body = binding.body.text?.toString()
-        val checkBox = binding.checkboxMeat.isChecked
-        val tickDesc = binding.tickDesc?.text.toString()
+//        val checkBox = binding.checkboxMeat.isChecked
+//        val tickDesc = binding.tickDesc?.text.toString()
         val url = binding.urlLink.text?.toString()
         val date = binding.date.text?.toString()
         val time = binding.time.text?.toString()
@@ -829,7 +936,8 @@ class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface{
 
         if (noteType.equals("Edit")){
             lifecycleScope.launch {
-                val updatedNote = NoteEntity(title,body,checkBox,tickDesc,url,date,time,location,colorId, bit)//, noteDescription)
+                val updatedNote = NoteEntity(title,body,
+                    checks, items,url,date,time,location,colorId, bit)//, noteDescription)
 
                 updatedNote.id = noteID
                 noteViewModel.updateNote(updatedNote)
@@ -845,7 +953,7 @@ class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface{
             lifecycleScope.launch {
                 noteViewModel.addNote(
                     NoteEntity(
-                        title, body,checkBox, tickDesc, url, date, time, location, colorId,
+                        title, body, checks, items, url, date, time, location, colorId,
                         bit
                     )
                 )//, noteDescription))
@@ -1060,5 +1168,14 @@ class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface{
 //        calendar.set(year, month, day, hour, minute)
 //        return calendar.timeInMillis
 //    }
-
+    fun openTodoPopup(todoDialog: Dialog) {
+        todoDialog.show()
+        todoDialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+        )
+        todoDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        todoDialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        todoDialog.window?.setGravity(Gravity.CENTER)
+    }
 }

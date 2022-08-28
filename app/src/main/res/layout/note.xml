@@ -56,21 +56,30 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:orientation="horizontal"
-                android:visibility="gone"
                 >
-                <CheckBox
-                    android:id="@+id/checkbox_meat"
-                    android:layout_width="10dp"
-                    android:layout_height="15dp"
-                    android:layout_marginLeft="6dp"
-                    android:clickable="false"/>
-                <TextView
-                    android:id="@+id/tick_Desc"
-                    android:textSize="13sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"/>
+<!--                <CheckBox-->
+<!--                    android:id="@+id/check_meat"-->
+<!--                    android:layout_width="10dp"-->
+<!--                    android:layout_height="15dp"-->
+<!--                    android:layout_marginLeft="6dp"-->
+<!--                    android:clickable="false"/>-->
+<!--                <TextView-->
+<!--                    android:id="@+id/tDesc"-->
+<!--                    android:textSize="13sp"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginLeft="5dp"/>-->
             </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+                    <include
+                        android:id="@+id/nested"
+                        layout="@layout/todo_display_list"/>
+
+                </LinearLayout>
                 <TextView
                     android:id="@+id/urlLink"
                     android:layout_width="wrap_content"
@@ -145,6 +154,14 @@
                         android:textSize="10dp"
                         android:theme="@style/SearchView" />
                 </LinearLayout>
+<!--                <ListView-->
+<!--                    android:id="@+id/listview2"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_below="@+id/header"-->
+<!--                    android:layout_marginTop="100dp"-->
+<!--                    android:layout_marginBottom="50dp"-->
+<!--                    android:scrollbars="none" />-->
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

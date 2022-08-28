@@ -126,8 +126,11 @@ class MainActivity : AppCompatActivity(), ViewAdapter.NoteClickInterface, ViewAd
         notesRV.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
 
-        noteRVAdapter = ViewAdapter(this, this)
+        noteRVAdapter = ViewAdapter(this, this,this)
         notesRV.adapter = noteRVAdapter
+
+
+
 
         viewModal = ViewModelProvider(
             this,
@@ -153,8 +156,6 @@ class MainActivity : AppCompatActivity(), ViewAdapter.NoteClickInterface, ViewAd
                 }
                 return true
             }
-
-
 
             override fun onQueryTextChange(p0: String?): Boolean {
 

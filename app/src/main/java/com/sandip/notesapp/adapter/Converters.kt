@@ -1,13 +1,13 @@
 package com.sandip.notesapp.adapter
 
-import android.database.CursorWindow
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.room.TypeConverter
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import java.io.ByteArrayOutputStream
-import java.lang.reflect.Field
-import java.sql.Date
-import java.text.SimpleDateFormat
+import java.lang.reflect.Type
+
 
 class Converters {
 
@@ -20,8 +20,35 @@ class Converters {
 
     @TypeConverter
     fun toBitmap(byteArray: ByteArray?): Bitmap? {
-       return byteArray?.size?.let { BitmapFactory.decodeByteArray(byteArray, 0, it) }
+        return byteArray?.size?.let { BitmapFactory.decodeByteArray(byteArray, 0, it) }
     }
+
+
+    @TypeConverter
+    fun fromBool(value: String?): ArrayList<Boolean> {
+        val listType = object : TypeToken<ArrayList<Boolean?>?>() {}.type
+        return Gson().fromJson(value, listType)
+    }
+
+    @TypeConverter
+    fun fromArrayList(list: ArrayList<Boolean?>?): String {
+        val gson = Gson()
+        return gson.toJson(list)
+    }
+
+
+    @TypeConverter
+    fun fromString(value: String?): ArrayList<String>? {
+        val listType: Type = object : TypeToken<ArrayList<String?>?>() {}.type
+        return Gson().fromJson(value, listType)
+    }
+
+    @TypeConverter
+    fun fromList(list: ArrayList<String?>?): String? {
+        val gson = Gson()
+        return gson.toJson(list)
+    }
+
 
 
 

@@ -34,10 +34,12 @@
         <entry key="app/src/main/res/drawable/ic_baseline_filter_list_24.xml" value="0.1375" />
         <entry key="app/src/main/res/drawable/ic_baseline_note_add_24.xml" value="0.123" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.184" />
+        <entry key="app/src/main/res/drawable/ic_outline_check_box_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/popup_background.xml" value="0.193" />
         <entry key="app/src/main/res/drawable/search_view.xml" value="0.199" />
         <entry key="app/src/main/res/drawable/square.xml" value="0.168" />
-        <entry key="app/src/main/res/layout/activity_add_note.xml" value="0.33" />
+        <entry key="app/src/main/res/drawable/todo_popup.xml" value="0.1125" />
+        <entry key="app/src/main/res/layout/activity_add_note.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_note.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_screen_lock.xml" value="0.18" />
@@ -63,16 +65,20 @@
         <entry key="app/src/main/res/layout/fragment_place.xml" value="0.1517094017094017" />
         <entry key="app/src/main/res/layout/fragment_screenlock.xml" value="0.29240506329113924" />
         <entry key="app/src/main/res/layout/fragment_slideshow.xml" value="0.2012820512820513" />
+        <entry key="app/src/main/res/layout/fragment_todo.xml" value="0.33" />
         <entry key="app/src/main/res/layout/image_popup.xml" value="0.29615384615384616" />
         <entry key="app/src/main/res/layout/login.xml" value="0.29240506329113924" />
         <entry key="app/src/main/res/layout/more_popup.xml" value="0.25" />
         <entry key="app/src/main/res/layout/nav_header.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/note.xml" value="0.37774524158125916" />
+        <entry key="app/src/main/res/layout/note.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/note_todo.xml" value="0.2952991452991453" />
         <entry key="app/src/main/res/layout/notification.xml" value="0.1" />
         <entry key="app/src/main/res/layout/page.xml" value="0.2824786324786325" />
         <entry key="app/src/main/res/layout/place.xml" value="0.1" />
         <entry key="app/src/main/res/layout/tick.xml" value="0.2952991452991453" />
         <entry key="app/src/main/res/layout/tickbox.xml" value="0.2952991452991453" />
+        <entry key="app/src/main/res/layout/todo_display_list.xml" value="0.2111111111111111" />
+        <entry key="app/src/main/res/layout/todo_listview.xml" value="0.33" />
         <entry key="app/src/main/res/layout/toggle.xml" value="0.5" />
         <entry key="app/src/main/res/layout/toolbar.xml" value="0.33" />
         <entry key="app/src/main/res/layout/url.xml" value="0.1" />

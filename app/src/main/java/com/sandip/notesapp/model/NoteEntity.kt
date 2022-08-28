@@ -9,8 +9,8 @@ import androidx.room.PrimaryKey
 class NoteEntity(
     @ColumnInfo(name = "Title") val title: String? = null,
     @ColumnInfo(name = "Body") val body: String? = null,
-    @ColumnInfo(name = "checkBox") val checkBox: Boolean? = null,
-    @ColumnInfo(name = "TickDesc") val tickDesc: String? = null,
+    @ColumnInfo(name = "checkBox") val c: ArrayList<Boolean>? = null,
+    @ColumnInfo(name = "TickDesc") val t: ArrayList<String>? = null,
     @ColumnInfo(name = "URL") val url: String? = null,
     @ColumnInfo(name = "Date") val date: String? = null,
     @ColumnInfo(name = "Time") val time: String? = null,
