@@ -33,7 +33,7 @@ import com.sandip.notesapp.adapter.ViewAdapter
 import com.sandip.notesapp.databinding.ActivityAddNoteBinding
 import com.sandip.notesapp.model.NoteEntity
 import kotlinx.coroutines.launch
-
+//Todo Bug: Need to implemet viewmodel obdervable and livedata
 
 //const val CHANNEL_ID: String = "23"
 //const val CHANNEL_NAME: String = "Laha"
@@ -61,8 +61,8 @@ class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface {
         var count = 0
 
         //         function to add an item given its name.
-        var items: ArrayList<String>? = null
-        var checks: ArrayList<Boolean>? = null
+        var items: ArrayList<String>? = java.util.ArrayList<String>()
+        var checks: ArrayList<Boolean>? = java.util.ArrayList<Boolean>()
 
         var listView: ListView? = null
         var adapter: ListViewBAdapter? = null
@@ -74,6 +74,7 @@ class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface {
                 println("Check box value:$chk")
             }
             listView?.setAdapter(adapter)
+            adapter?.notifyDataSetChanged()
             println(items)
             Log.d("Items after add", items.toString()+ checks)
 
@@ -83,11 +84,13 @@ class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface {
 
 //        items?.toString()?.let { Log.d("Items before delete", it) }
 //
-//            Log.d("Removed: " + items?.get(i))
+            Log.d("Items before delete", i.toString())
+
             items?.removeAt(i)
             checks?.removeAt(i)
             listView?.setAdapter(adapter)
             Log.d("Items before delete", items.toString())
+            adapter?.notifyDataSetChanged()
 
         }
         fun getPosition(i:Int){
@@ -279,8 +282,6 @@ class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface {
 
         listView = todoDialog.findViewById(R.id.listview2)
 
-        items = java.util.ArrayList<String>()
-        checks = java.util.ArrayList<Boolean>()
 
         val check:CheckBox = todoDialog.findViewById(R.id.todoCheck)
         val editText:EditText = todoDialog.findViewById(R.id.todoDesc)
@@ -858,9 +859,7 @@ class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface {
 
         runOnUiThread {
             val noteTitle = allNotes[0].title
-//            val checkMeat = allNotes[0].checkBox
             val noteDescription = allNotes[0].body
-//            val tickDesc = allNotes[0].tickDesc
             val url = allNotes[0].url
             val date = allNotes[0].date
             val time = allNotes[0].time
@@ -900,11 +899,21 @@ class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface {
             binding.addNote.setBackgroundColor(clr)
 
 
-
-
-
             binding.setImage.visibility = View.VISIBLE
             binding.setImage.setImageBitmap(bitmap)
+
+            if(!(allNotes[0].t.isNullOrEmpty())){
+                binding.td.visibility=View.VISIBLE
+                items = allNotes[0].t
+                 checks = allNotes[0].c
+                adapter = allNotes[0].t?.let { items?.let { it1 ->
+                    ListViewBAdapter(this, checks,
+                        it1
+                    )
+                } }
+                listView!!.adapter = adapter
+            }
+
 
         }
 
@@ -933,7 +942,8 @@ class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface {
         val width = bitmap?.width
         val bit = bitmap?.let { Bitmap.createScaledBitmap(it, width!!,height!!,false) }
 
-
+        var str: ArrayList<String>? = java.util.ArrayList<String>()
+        var ch: ArrayList<Boolean>? = java.util.ArrayList<Boolean>()
         if (noteType.equals("Edit")){
             lifecycleScope.launch {
                 val updatedNote = NoteEntity(title,body,

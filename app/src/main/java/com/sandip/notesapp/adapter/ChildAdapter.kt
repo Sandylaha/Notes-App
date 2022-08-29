@@ -1,11 +1,13 @@
 package com.sandip.notesapp.adapter
 
 import android.app.Activity
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.sandip.notesapp.R
 import java.util.*
@@ -32,14 +34,17 @@ class ChildAdapter(ac: Activity, s: ArrayList<String>?, b: ArrayList<Boolean>?) 
         )
         return ViewHolder(itemView)
     }
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var size = title?.size
-//
+
         for(i in 0 until size!!){
 //        if (!(childNotes[position].t.isNullOrEmpty())) {
 //            childNotes[position].c.also {
 //                if (it != null) {
             var imagebyCode = ImageView(activity)
+            imagebyCode.isClickable = false
+            imagebyCode.focusable = View.NOT_FOCUSABLE
             if(check?.get(i) == true){
                 imagebyCode.setImageResource(R.drawable.ic_outline_check_box_24)
 
@@ -57,6 +62,7 @@ class ChildAdapter(ac: Activity, s: ArrayList<String>?, b: ArrayList<Boolean>?) 
 
             holder.tick.append(title?.get(i) ?: "")
             holder.tick.append("\n")
+//        holder.tick.text  = ti
         }
 
 //                }

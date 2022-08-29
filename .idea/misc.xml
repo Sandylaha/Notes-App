@@ -70,7 +70,7 @@
         <entry key="app/src/main/res/layout/login.xml" value="0.29240506329113924" />
         <entry key="app/src/main/res/layout/more_popup.xml" value="0.25" />
         <entry key="app/src/main/res/layout/nav_header.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/note.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/note.xml" value="0.1" />
         <entry key="app/src/main/res/layout/note_todo.xml" value="0.2952991452991453" />
         <entry key="app/src/main/res/layout/notification.xml" value="0.1" />
         <entry key="app/src/main/res/layout/page.xml" value="0.2824786324786325" />

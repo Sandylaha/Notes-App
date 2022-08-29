@@ -91,8 +91,6 @@ class MainActivity : AppCompatActivity(), ViewAdapter.NoteClickInterface, ViewAd
             image2.setImageResource(0)
             image3.setImageResource(0)
             image4.setImageResource(0)
-
-
         }
 
         layout2.setOnClickListener {

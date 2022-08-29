@@ -133,6 +133,7 @@ class ViewAdapter(
             notesRV.layoutManager = LinearLayoutManager(activity)
 
             notesRV.adapter = childAdapter
+        println("Position $position")
 //
 //  Upto here
 //        val textView = TextView(activity)
