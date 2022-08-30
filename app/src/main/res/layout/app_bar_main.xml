@@ -39,7 +39,6 @@
                     android:scrollbars="vertical" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
-<!--    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -54,4 +53,3 @@
         app:layout_constraintBottom_toBottomOf="@+id/swipe_refresh_layout"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
-<!--</androidx.constraintlayout.widget.ConstraintLayout>-->

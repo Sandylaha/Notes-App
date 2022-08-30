@@ -72,12 +72,6 @@
                 android:textSize="24dp"
                 android:theme="@style/SearchView" />
 
-            <!--            </LinearLayout>-->
-            <!--        </ScrollView>-->
-
-
-            <!--    </LinearLayout>-->
-
             <EditText
                 android:id="@+id/body"
                 android:layout_width="wrap_content"
@@ -87,24 +81,13 @@
                 android:hint="Body"
                 android:textSize="20dp"
                 android:theme="@style/SearchView" />
-<!--            <LinearLayout-->
-<!--                android:id="@+id/more"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:orientation="vertical"-->
-<!--                android:visibility="gone"/>-->
-
-
-<!--            </LinearLayout>-->
-
             <LinearLayout
                 android:id="@+id/checkbox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
-                android:visibility="gone"
-                >
+                android:visibility="gone">
 
                 <CheckBox
                     android:id="@+id/checkbox_meat"
@@ -124,8 +107,6 @@
 
             </LinearLayout>
 
-
-
             <LinearLayout
                 android:id="@+id/add_more"
                 android:layout_width="match_parent"
@@ -133,8 +114,7 @@
                 android:layout_margin="10dp"
                 android:layout_marginTop="30dp"
                 android:orientation="horizontal"
-                android:visibility="gone"
-               >
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -155,8 +135,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal"
-                android:visibility="gone"
-                >
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/urlLink"
@@ -164,21 +143,11 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:autoLink="web"
-
                     android:textSize="16sp"
                     android:textColor="@color/blue"
                     android:theme="@style/SearchView"
                     />
             </LinearLayout>
-<!--            <TextView-->
-<!--                android:id="@+id/place1"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="10dp"-->
-<!--                android:background="@null"-->
-<!--                android:textSize="16dp"-->
-<!--                android:theme="@style/SearchView"-->
-<!--                android:visibility="gone" />-->
 
             <LinearLayout
                 android:id="@+id/reminder"
@@ -217,6 +186,7 @@
                     android:textSize="16dp"
                     android:theme="@style/SearchView" />
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/location"
                 android:layout_width="wrap_content"
@@ -224,8 +194,7 @@
                 android:layout_marginTop="20dp"
                 android:visibility="gone"
                 android:background="@drawable/search_view"
-                android:orientation="horizontal"
-                >
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="25dp"
@@ -244,52 +213,7 @@
                     android:textSize="16dp"
                     android:theme="@style/SearchView" />
             </LinearLayout>
-<!--            <LinearLayout-->
-<!--                android:id="@+id/linearLayout2"-->
-<!--                android:layout_width="404dp"-->
-<!--                android:layout_height="269dp"-->
-<!--                android:layout_marginBottom="272dp"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                tools:layout_editor_absoluteX="7dp">-->
 
-<!--                <DatePicker-->
-<!--                    android:id="@+id/date_picker"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center"-->
-<!--                    android:layout_marginHorizontal="-30dp"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:calendarViewShown="false"-->
-<!--                    android:datePickerMode="spinner"-->
-<!--                    android:scaleX=".7"-->
-<!--                    android:scaleY=".7" />-->
-
-<!--                <TimePicker-->
-<!--                    android:id="@+id/time_picker"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center"-->
-<!--                    android:layout_marginHorizontal="-30dp"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:calendarViewShown="false"-->
-<!--                    android:scaleX=".7"-->
-<!--                    android:scaleY=".7"-->
-<!--                    android:timePickerMode="spinner" />-->
-<!--            </LinearLayout>-->
-<!--            <androidx.constraintlayout..ConstraintLayout-->
-<!--                android:layout_width="365dp"-->
-<!--                android:layout_height="403dp"-->
-<!--                tools:layout_editor_absoluteX="16dp"-->
-<!--                tools:layout_editor_absoluteY="368dp">-->
-
-<!--                <ListView-->
-<!--                    android:id="@+id/listView"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:divider="@null"-->
-<!--                    android:dividerHeight="0dp" />-->
-
-<!--            </androidx.constraintlayout..ConstraintLayout>-->
             <LinearLayout
                 android:id="@+id/td"
                 android:layout_width="45dp"
@@ -297,8 +221,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/search_view"
                 android:orientation="horizontal"
-                android:visibility="gone"
-                >
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="25dp"
@@ -306,14 +229,8 @@
                     android:layout_marginLeft="10dp"
                     android:src="@drawable/ic_outline_checklist_24" />
             </LinearLayout>
-
-
         </LinearLayout>
-
-
     </androidx.core.widget.NestedScrollView>
-
-
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -334,8 +251,7 @@
             android:layout_height="40dp"
             android:layout_marginStart="5dp"
             android:layout_marginBottom="5dp"
-            android:src="@drawable/ic_baseline_add_box_24"
-            />
+            android:src="@drawable/ic_baseline_add_box_24"/>
 
         <ImageView
             android:id="@+id/color"
@@ -363,8 +279,6 @@
 
 
     </LinearLayout>
-
-
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
