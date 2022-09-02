@@ -849,9 +849,7 @@ class AddNote : AppCompatActivity(), ViewAdapter.NoteClickDeleteInterface {
         lifecycleScope.launch {
             allNotes = noteViewModel.getDataById(noteID) as ArrayList<NoteEntity>
 
-            with(allNotes) {
-                dfgdg()
-            }
+            dfgdg()
         }
     }
 
